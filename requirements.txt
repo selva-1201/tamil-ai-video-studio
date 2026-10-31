@@ -24,7 +24,7 @@ protobuf>=5.29.0
 
 # --- Stage 0, 1 & 4b: VLM, LLM Planner & Face Identity Check ---
 pydantic>=2.8.0
-facenet-pytorch>=2.6.0
+# facenet-pytorch is installed with --no-deps in notebook Cell 2 (avoids its pillow<10.3 metadata cap)
 
 # --- Stage 2: Tamil TTS & Whisper Verification ---
 faster-whisper>=1.1.0
