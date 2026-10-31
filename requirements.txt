@@ -1,0 +1,68 @@
+# ==============================================================================
+# Tamil AI Video Studio — Pinned Requirements for Kaggle 2×T4 (Turing sm_75)
+# Hardware Target: 2× NVIDIA Tesla T4 (15 GB VRAM each, CUDA 12.1/12.4, sm_75)
+# Strictly NO FlashAttention-2, NO native bfloat16/fp8 dependencies.
+# Uses fp16, int8, GGUF (Q4_K_M / Q5_K_M / Q8_0), SDPA & xFormers attention.
+# ==============================================================================
+
+# --- Core Deep Learning & T4 Attention (CUDA 12.1 compatible with Kaggle) ---
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch==2.5.1+cu121
+torchvision==0.20.1+cu121
+torchaudio==2.5.1+cu121
+xformers==0.0.28.post3
+
+# --- Hugging Face & Multi-GPU / Offload Ecosystem ---
+transformers==4.48.3
+accelerate==1.3.0
+diffusers==0.35.1
+huggingface-hub[cli,hf_transfer]==0.28.1
+safetensors==0.5.2
+peft==0.14.0
+gguf==0.14.0
+sentencepiece==0.2.0
+protobuf==5.29.3
+
+# --- Stage 1: LLM Planner (Qwen3-8B / 4B GGUF via CUDA llama.cpp) ---
+# Installed with CMAKE_ARGS="-DGGML_CUDA=on" or prebuilt CUDA wheel in notebook
+llama-cpp-python==0.3.7
+pydantic==2.10.6
+
+# --- Stage 2: Tamil TTS (IndicF5 / svara-TTS) & Whisper Verification ---
+faster-whisper==1.1.1
+ctranslate2==4.5.0
+soundfile==0.13.1
+librosa==0.10.2.post1
+scipy==1.14.1
+numba==0.60.0
+pyloudnorm==0.1.1
+noisereduce==3.0.3
+jiwer==3.1.0
+ema-pytorch==0.7.7
+vocos==0.1.0
+cached-path==1.6.7
+
+# --- Stage 4 & 5: Audio/Video Generation & Processing ---
+einops==0.8.0
+ftfy==6.3.1
+imageio==2.37.0
+imageio-ffmpeg==0.6.0
+av==14.1.0
+opencv-python-headless==4.11.0.86
+pillow==11.1.0
+omega-conf==2.3.0
+toml==0.10.2
+pyyaml==6.0.2
+
+# --- Stage 6 & 7: Assembly & Cloud Sync ---
+ffmpeg-python==0.2.0
+pydrive2==1.21.3
+
+# --- Backend API & SSE Server ---
+fastapi==0.115.8
+uvicorn[standard]==0.34.0
+python-multipart==0.0.20
+sse-starlette==2.2.1
+aiosqlite==0.21.0
+psutil==6.1.1
+httpx==0.28.1

@@ -1,0 +1,122 @@
+# ==============================================================================
+# Tamil AI Video Studio — Central Studio Configuration (Kaggle 2×T4)
+# ==============================================================================
+
+environment:
+  kaggle_temp_dir: "/kaggle/temp/tamil_studio"
+  kaggle_working_dir: "/kaggle/working/tamil_studio_out"
+  models_dir: "/kaggle/temp/tamil_studio/models"
+  checkpoints_dir: "/kaggle/temp/tamil_studio/checkpoints"
+  voices_dir: "/kaggle/temp/tamil_studio/voices"
+  db_path: "/kaggle/working/tamil_studio_out/studio_jobs.db"
+  # Automatic local fallback when running outside Kaggle
+  fallback_root: "./workspace_data"
+
+hardware:
+  gpu_count: 2
+  vram_per_gpu_gb: 15.0
+  architecture: "sm_75"  # Turing T4
+  dtype: "float16"       # Strictly fp16 (no native bf16/fp8 on T4)
+  attention_backend: "sdpa"  # PyTorch SDPA or xformers (no FlashAttention-2)
+  default_placement:
+    transformer_device: "cuda:0"
+    aux_device: "cuda:1" # Text encoder + VAE + audio encoders
+
+planner:
+  primary_repo: "Qwen/Qwen3-8B-GGUF"
+  primary_file: "Qwen3-8B-Q4_K_M.gguf"
+  fallback_repo: "Qwen/Qwen3-4B-GGUF"
+  fallback_file: "Qwen3-4B-Q4_K_M.gguf"
+  custom_gguf_path: ""   # User-swappable in Settings (e.g. abliterated/uncensored GGUF)
+  n_ctx: 4096
+  n_gpu_layers: -1       # Full GPU offload on cuda:0 (~5.2 GB VRAM)
+  tamil_words_per_sec: 2.2
+  max_retries: 3
+
+tts:
+  primary_model: "ai4bharat/IndicF5"
+  fallback_model: "kenpath/svara-tts-voiceclone-beta"
+  sample_rate: 24000
+  target_lufs: -16.0
+  pause_min_ms: 150
+  pause_max_ms: 250
+  ref_segment_min_sec: 8.0
+  ref_segment_max_sec: 12.0
+  whisper_model: "deepdml/faster-whisper-large-v3-turbo-ct2"
+  whisper_fallback: "medium"
+  whisper_compute_type: "float16"  # Never bf16 on T4
+  cer_threshold: 0.18              # Max Character Error Rate before retry
+  max_qa_retries: 2
+
+music:
+  repo_id: "ACE-Step/ACE-Step-v1.5"
+  config_name: "acestep-v15-turbo"
+  lm_model_name: "acestep-5Hz-lm-0.6B"
+  lm_backend: "pt"       # PyTorch fp16 backend (avoid vLLM bf16 issues on T4)
+  inference_steps: 8
+  shift: 3.0             # Mandatory shift=3.0 for ACE-Step 1.5 turbo
+  fade_in_sec: 1.5
+  fade_out_sec: 2.0
+  tail_pad_sec: 2.0
+
+video:
+  default_engine: "wan22"          # "wan22" (Quality) | "ltx23" (Fast)
+  default_preset: "balanced"       # "fast" | "balanced" | "best"
+  keyframe_reset_interval: 3       # Fresh T2V keyframe every 3-4 clips to prevent drift
+  wan22:
+    # Quality engine: Wan 2.2 A14B (High-Noise + Low-Noise MoE experts)
+    i2v_gguf_repo: "QuantStack/Wan2.2-I2V-A14B-GGUF"
+    t2v_gguf_repo: "QuantStack/Wan2.2-T2V-A14B-GGUF"
+    high_noise_file_q8: "Wan2.2-I2V-A14B-HighNoise-Q8_0.gguf"
+    low_noise_file_q8: "Wan2.2-I2V-A14B-LowNoise-Q8_0.gguf"
+    high_noise_file_q5: "Wan2.2-I2V-A14B-HighNoise-Q5_K_M.gguf"
+    low_noise_file_q5: "Wan2.2-I2V-A14B-LowNoise-Q5_K_M.gguf"
+    distill_lora_repo: "lightx2v/Wan2.2-Distill-LoRAs"
+    fallback_ti2v_repo: "QuantStack/Wan2.2-TI2V-5B-GGUF"
+    fallback_ti2v_file: "Wan2.2-TI2V-5B-Q8_0.gguf"
+    boundary_ratio_i2v: 0.90
+    boundary_ratio_t2v: 0.875
+    clip_seconds: 5
+    fps: 16
+    steps_quality: 20
+    steps_fast_lora: 4
+  ltx23:
+    # Fast engine: LTX-2.3 22B Distilled GGUF with native ambient audio
+    gguf_repo: "unsloth/LTX-2.3-GGUF"
+    gguf_file: "ltx-2.3-22b-dev-UD-Q3_K_M.gguf"
+    diffusers_repo: "diffusers/LTX-2.3-Diffusers"
+    fallback_repo: "Lightricks/LTX-Video"
+    clip_seconds: 8
+    fps: 24
+    steps_distilled: 8
+    cfg_scale: 1.0
+  mmaudio:
+    repo_id: "hkchengrex/MMAudio"
+    model_name: "large_44k_v2"
+    negative_prompt: "speech, vocals, human voice, talking, singing, music, melody"
+  talking:
+    primary_engine: "infinitetalk" # MeiGen-AI/InfiniteTalk (Wan-based streaming)
+    infinitetalk_repo: "MeiGen-AI/InfiniteTalk"
+    wan_base_repo: "Wan-AI/Wan2.1-I2V-14B-480P"
+    wav2vec_repo: "facebook/wav2vec2-base-960h"
+    s2v_repo: "Wan-AI/Wan2.2-S2V-14B"
+    resolution: "480p"
+    sample_steps_lora: 8
+    motion_frame: 9
+    num_persistent_param_in_dit: 0 # Essential for 15 GB T4 VRAM
+
+mix:
+  voice_db: 0.0          # Normalized to -16 LUFS
+  music_db: -18.0        # Base music level before sidechain ducking
+  ambience_db: -24.0     # Ambient sound bed
+  crossfade_sec: 0.25
+  video_codec: "libx264"
+  video_crf: 18
+  pixel_format: "yuv420p"
+  audio_codec: "aac"
+  audio_bitrate: "192k"
+
+drive:
+  remote_name: "gdrive"
+  root_folder: "TamilVideoStudio"
+  cache_models_in_drive: false
