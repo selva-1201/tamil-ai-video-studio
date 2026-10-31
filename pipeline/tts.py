@@ -205,7 +205,6 @@ class TamilVoiceEngine:
         self.models_dir = models_dir
         self.tts_cfg = config.get("tts", {})
         self.voices_dir.mkdir(parents=True, exist_ok=True)
-        self._ensure_default_profile()
 
     def _ensure_default_profile(self) -> None:
         """Create a default studio Tamil reference voice profile so smoke tests & fresh runs work immediately."""
@@ -384,12 +383,18 @@ class TamilVoiceEngine:
         apply_t4_compatibility_patches()
         output_dir.mkdir(parents=True, exist_ok=True)
 
-        profile_dir = self.voices_dir / profile_id
-        if not (profile_dir / "profile.json").exists():
-            profile_dir = self.voices_dir / "default_tamil_narrator"
-        profile_meta = json.loads((profile_dir / "profile.json").read_text(encoding="utf-8"))
-        ref_wav = Path(profile_meta["ref_wav"])
-        ref_text = Path(profile_meta["ref_txt"]).read_text(encoding="utf-8").strip()
+        profile_dir = self.voices_dir / profile_id if profile_id else None
+        if profile_dir and (profile_dir / "profile.json").exists():
+            profile_meta = json.loads((profile_dir / "profile.json").read_text(encoding="utf-8"))
+            ref_wav = Path(profile_meta["ref_wav"])
+            ref_text = Path(profile_meta["ref_txt"]).read_text(encoding="utf-8").strip()
+        else:
+            # Generate ephemeral reference prompt inside output_dir without polluting voices_dir
+            ref_wav = output_dir / "_ephemeral_ref.wav"
+            ref_text = "வணக்கம், இது தமிழ் ஏஐ வீடியோ ஸ்டுடியோவின் இயற்கையான குரல் பதிவு."
+            if not ref_wav.exists():
+                ephem = _synthesize_tamil_formant_fallback(ref_text, sr=SAMPLE_RATE)
+                sf.write(str(ref_wav), ephem, SAMPLE_RATE)
 
         cer_threshold = float(self.tts_cfg.get("cer_threshold", 0.18))
         max_retries = int(self.tts_cfg.get("max_qa_retries", 2))

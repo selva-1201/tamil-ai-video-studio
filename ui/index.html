@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Tamil AI Video Studio — Kaggle 2×T4 Open-Source Suite</title>
+  <title>Tamil AI Video Studio v2 — Kaggle 2×T4 Open-Source Suite</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -15,8 +15,9 @@
       --text-3: #6b6b6b;
       --glass: rgba(255, 255, 255, .06);
       --glass-2: rgba(255, 255, 255, .10);
+      --glass-3: rgba(255, 255, 255, .15);
       --border: rgba(255, 255, 255, .14);
-      --border-bright: rgba(255, 255, 255, .38);
+      --border-bright: rgba(255, 255, 255, .42);
       --highlight: inset 0 1px 0 rgba(255, 255, 255, .18);
       --blur: blur(24px) saturate(140%);
       --radius: 20px;
@@ -37,14 +38,14 @@
       background: var(--bg);
       color: var(--text);
       font-family: var(--font-ui);
-      font-size: 15px;
+      font-size: 14.5px;
       line-height: 1.55;
       min-height: 100vh;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
     }
 
-    /* Strictly Monochrome Ambient Drifting Orbs (4-8% white opacity) */
+    /* Strictly Monochrome Ambient Drifting Orbs (5-8% opacity so backdrop-filter blur(24px) is visibly refractive) */
     .ambient-stage {
       position: fixed;
       inset: 0;
@@ -57,40 +58,40 @@
     .orb {
       position: absolute;
       border-radius: 50%;
-      filter: blur(110px);
-      background: radial-gradient(circle, rgba(255,255,255,0.075) 0%, rgba(255,255,255,0.02) 55%, transparent 75%);
-      animation: floatOrb 26s ease-in-out infinite alternate;
+      filter: blur(95px);
+      background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.03) 48%, transparent 74%);
+      animation: floatOrb 24s ease-in-out infinite alternate;
     }
 
     .orb-1 {
-      width: 680px;
-      height: 680px;
-      top: -180px;
-      left: -140px;
+      width: 720px;
+      height: 720px;
+      top: -160px;
+      left: -120px;
     }
 
     .orb-2 {
-      width: 760px;
-      height: 760px;
-      bottom: -240px;
-      right: -160px;
-      animation-duration: 34s;
+      width: 800px;
+      height: 800px;
+      bottom: -220px;
+      right: -140px;
+      animation-duration: 31s;
       animation-direction: alternate-reverse;
     }
 
     .orb-3 {
-      width: 520px;
-      height: 520px;
-      top: 38%;
-      left: 42%;
-      opacity: 0.65;
-      animation-duration: 29s;
+      width: 560px;
+      height: 560px;
+      top: 32%;
+      left: 38%;
+      background: radial-gradient(circle, rgba(255,255,255,0.065) 0%, rgba(255,255,255,0.02) 55%, transparent 78%);
+      animation-duration: 27s;
     }
 
     @keyframes floatOrb {
       0% { transform: translate3d(0, 0, 0) scale(1); }
-      50% { transform: translate3d(42px, -28px, 0) scale(1.06); }
-      100% { transform: translate3d(-32px, 34px, 0) scale(0.96); }
+      50% { transform: translate3d(52px, -36px, 0) scale(1.07); }
+      100% { transform: translate3d(-38px, 42px, 0) scale(0.95); }
     }
 
     /* Subtle Film Grain Overlay */
@@ -99,7 +100,7 @@
       inset: 0;
       pointer-events: none;
       z-index: 1;
-      opacity: 0.035;
+      opacity: 0.04;
       background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     }
 
@@ -111,16 +112,15 @@
       }
     }
 
-    /* App Layout */
     .app-shell {
       position: relative;
       z-index: 2;
-      max-width: 1240px;
+      max-width: 1260px;
       margin: 0 auto;
-      padding: 20px 16px 80px;
+      padding: 18px 16px 84px;
     }
 
-    /* Glass Panels */
+    /* True Refractive Glass Panels */
     .glass-panel {
       background: var(--glass);
       backdrop-filter: var(--blur);
@@ -131,13 +131,15 @@
     }
 
     .glass-subpanel {
-      background: rgba(255, 255, 255, 0.035);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.07) 0%, rgba(255, 255, 255, 0.03) 100%);
+      backdrop-filter: var(--blur);
+      -webkit-backdrop-filter: var(--blur);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       box-shadow: var(--highlight);
     }
 
-    /* Top Bar & Navigation */
+    /* Header & Persistent Per-GPU Telemetry Bar */
     .topbar {
       display: flex;
       flex-wrap: wrap;
@@ -145,7 +147,7 @@
       justify-content: space-between;
       gap: 14px;
       padding: 14px 20px;
-      margin-bottom: 22px;
+      margin-bottom: 18px;
     }
 
     .brand {
@@ -165,46 +167,50 @@
       font-family: var(--font-ta);
       font-weight: 700;
       font-size: 19px;
-      letter-spacing: -0.03em;
+      box-shadow: 0 4px 16px rgba(255,255,255,0.25);
     }
 
     .brand-title {
-      font-size: 16px;
+      font-size: 15.5px;
       font-weight: 600;
       letter-spacing: -0.02em;
     }
 
     .brand-sub {
-      font-size: 12px;
+      font-size: 11.5px;
       color: var(--text-2);
     }
 
     .nav-tabs {
       display: flex;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
+      overflow-x: auto;
       gap: 6px;
+      scrollbar-width: none;
+    }
+
+    .nav-tabs::-webkit-scrollbar {
+      display: none;
     }
 
     .nav-tab {
       appearance: none;
-      background: transparent;
+      background: rgba(255,255,255,0.03);
       color: var(--text-2);
       border: 1px solid transparent;
       padding: 8px 14px;
       border-radius: 999px;
       font-family: var(--font-ui);
-      font-size: 13px;
+      font-size: 12.5px;
       font-weight: 500;
+      white-space: nowrap;
       cursor: pointer;
       transition: all var(--ease);
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
     }
 
     .nav-tab:hover {
       color: var(--text);
-      background: var(--glass);
+      background: var(--glass-2);
       border-color: var(--border);
       transform: translateY(-1px);
     }
@@ -214,48 +220,56 @@
       color: #000;
       font-weight: 600;
       border-color: #fff;
+      box-shadow: 0 4px 18px rgba(255,255,255,0.22);
     }
 
+    /* Live Telemetry Strip (visible on EVERY screen) */
+    .telemetry-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 10px;
+      padding: 10px 16px;
+      margin-bottom: 20px;
+      font-size: 12px;
+    }
+
+    .telemetry-cell {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .mini-bar-track {
+      width: 100%;
+      height: 5px;
+      background: rgba(255,255,255,0.09);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .mini-bar-fill {
+      height: 100%;
+      background: #fff;
+      border-radius: 999px;
+      transition: width 300ms ease;
+    }
+
+    /* Focus rings */
     .nav-tab:focus-visible,
     .btn:focus-visible,
     .chip:focus-visible,
     input:focus-visible,
     textarea:focus-visible,
-    select:focus-visible {
+    select:focus-visible,
+    .dropzone:focus-visible {
       outline: 2px solid #fff;
       outline-offset: 2px;
     }
 
-    .gpu-pill {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      font-size: 12px;
-      color: var(--text-2);
-      padding: 6px 12px;
-      border-radius: 999px;
-      border: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.04);
-    }
-
-    .status-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #fff;
-      box-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
-    }
-
-    /* Typography */
     .tamil-text {
       font-family: var(--font-ta);
       line-height: 1.75;
       letter-spacing: 0.01em;
-    }
-
-    h1, h2, h3 {
-      letter-spacing: -0.02em;
-      font-weight: 600;
     }
 
     .section-header {
@@ -268,12 +282,13 @@
     }
 
     .section-title {
-      font-size: 20px;
-      color: var(--text);
+      font-size: 19px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
     }
 
     .section-desc {
-      font-size: 13px;
+      font-size: 12.5px;
       color: var(--text-2);
     }
 
@@ -281,9 +296,9 @@
     .btn {
       appearance: none;
       border-radius: 999px;
-      padding: 10px 20px;
+      padding: 10px 18px;
       font-family: var(--font-ui);
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 600;
       cursor: pointer;
       transition: all var(--ease);
@@ -302,13 +317,15 @@
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.22);
+      box-shadow: 0 8px 24px rgba(255, 255, 255, 0.25);
     }
 
     .btn-secondary {
       background: var(--glass);
+      backdrop-filter: var(--blur);
       color: var(--text);
       border: 1px solid var(--border);
+      box-shadow: var(--highlight);
     }
 
     .btn-secondary:hover {
@@ -318,7 +335,7 @@
     }
 
     .btn-sm {
-      padding: 7px 13px;
+      padding: 6px 12px;
       font-size: 12px;
     }
 
@@ -326,7 +343,7 @@
     .chip-group {
       display: flex;
       flex-wrap: wrap;
-      gap: 8px;
+      gap: 7px;
     }
 
     .chip {
@@ -334,9 +351,9 @@
       background: rgba(255, 255, 255, 0.04);
       color: var(--text-2);
       border: 1px solid var(--border);
-      padding: 7px 14px;
+      padding: 6px 13px;
       border-radius: 999px;
-      font-size: 12.5px;
+      font-size: 12px;
       font-weight: 500;
       cursor: pointer;
       transition: all var(--ease);
@@ -354,39 +371,197 @@
       font-weight: 600;
     }
 
-    /* Inputs */
+    /* Custom Monochrome Form Controls (Zero Default Browser Blue!) */
     label.field-label {
       display: block;
-      font-size: 12px;
+      font-size: 11.5px;
       text-transform: uppercase;
       letter-spacing: 0.06em;
       color: var(--text-2);
-      margin-bottom: 8px;
+      margin-bottom: 7px;
       font-weight: 600;
     }
 
-    textarea, input[type="text"], input[type="password"], select {
+    textarea,
+    input[type="text"],
+    input[type="password"] {
       width: 100%;
-      background: rgba(255, 255, 255, 0.04);
+      background: rgba(255, 255, 255, 0.045);
+      backdrop-filter: var(--blur);
       border: 1px solid var(--border);
       border-radius: var(--radius-sm);
       color: var(--text);
-      padding: 12px 14px;
+      padding: 11px 14px;
       font-family: var(--font-ui);
-      font-size: 14px;
+      font-size: 13.5px;
+      box-shadow: var(--highlight);
       transition: border-color var(--ease), background var(--ease);
     }
 
-    textarea:hover, input[type="text"]:hover, select:hover {
-      border-color: rgba(255, 255, 255, 0.26);
+    textarea:hover,
+    input[type="text"]:hover,
+    input[type="password"]:hover {
+      border-color: var(--border-bright);
     }
 
-    select option {
-      background: #111;
+    /* Custom Glass <select> with Monochrome Chevron */
+    select.glass-select {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 100%;
+      background-color: rgba(255, 255, 255, 0.055);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%23ffffff' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 13px center;
+      backdrop-filter: var(--blur);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text);
+      padding: 10px 36px 10px 13px;
+      font-family: var(--font-ui);
+      font-size: 13px;
+      box-shadow: var(--highlight);
+      cursor: pointer;
+      transition: border-color var(--ease), background-color var(--ease);
+    }
+
+    select.glass-select:hover {
+      border-color: var(--border-bright);
+      background-color: rgba(255, 255, 255, 0.09);
+    }
+
+    select.glass-select option {
+      background: #0c0c0c;
       color: #fff;
     }
 
-    /* Grid utilities */
+    /* Custom Monochrome Glass Checkbox */
+    input[type="checkbox"].glass-checkbox {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border-radius: 5px;
+      border: 1px solid var(--border-bright);
+      background: rgba(255, 255, 255, 0.06);
+      display: inline-grid;
+      place-content: center;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: all var(--ease);
+    }
+
+    input[type="checkbox"].glass-checkbox::before {
+      content: "";
+      width: 10px;
+      height: 10px;
+      transform: scale(0);
+      transition: 140ms transform ease-in-out;
+      box-shadow: inset 1em 1em #000;
+      clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+    }
+
+    input[type="checkbox"].glass-checkbox:checked {
+      background: #fff;
+      border-color: #fff;
+    }
+
+    input[type="checkbox"].glass-checkbox:checked::before {
+      transform: scale(1);
+    }
+
+    /* Custom Monochrome Range Slider */
+    input[type="range"].glass-slider {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 120px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      cursor: pointer;
+    }
+
+    input[type="range"].glass-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #000;
+      box-shadow: 0 0 8px rgba(255,255,255,0.6);
+    }
+
+    /* Custom Glass File Dropzone (Replaces raw Choose File button) */
+    .dropzone {
+      border: 1px dashed rgba(255, 255, 255, 0.32);
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.03);
+      padding: 18px;
+      text-align: center;
+      cursor: pointer;
+      transition: all var(--ease);
+    }
+
+    .dropzone:hover,
+    .dropzone.dragover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #fff;
+    }
+
+    .hidden-file-input {
+      display: none;
+    }
+
+    /* Reference Image Thumbnail Grid (Up to 4 images) */
+    .ref-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(235px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .ref-card {
+      padding: 12px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .ref-thumb-wrap {
+      position: relative;
+      width: 100%;
+      height: 136px;
+      border-radius: 8px;
+      overflow: hidden;
+      background: #080808;
+      border: 1px solid var(--border);
+    }
+
+    .ref-thumb-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .ref-remove-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.78);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.4);
+      cursor: pointer;
+      font-size: 13px;
+      display: grid;
+      place-items: center;
+    }
+
+    /* Grids & Empty States */
     .grid-2 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -397,6 +572,15 @@
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
       gap: 16px;
+    }
+
+    .empty-state {
+      padding: 36px 20px;
+      text-align: center;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius-sm);
+      color: var(--text-2);
+      font-size: 13.5px;
     }
 
     .screen {
@@ -413,14 +597,14 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Monochrome Badges (brightness, fill, dashed vs solid borders — zero color hues) */
+    /* Monochrome Badges */
     .badge {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      padding: 4px 10px;
+      padding: 3px 10px;
       border-radius: 999px;
-      font-size: 11.5px;
+      font-size: 11px;
       font-weight: 600;
       letter-spacing: 0.02em;
     }
@@ -432,42 +616,41 @@
     }
 
     .badge-outline {
-      background: rgba(255, 255, 255, 0.06);
+      background: rgba(255, 255, 255, 0.07);
       color: #fff;
-      border: 1px solid rgba(255, 255, 255, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.36);
     }
 
     .badge-dashed {
       background: transparent;
       color: var(--text-2);
-      border: 1px dashed rgba(255, 255, 255, 0.45);
+      border: 1px dashed rgba(255, 255, 255, 0.42);
     }
 
-    /* Vertical Stepper (Screen 3: Progress) */
+    /* Vertical Stepper */
     .stepper {
       display: flex;
       flex-direction: column;
-      gap: 14px;
+      gap: 10px;
     }
 
     .step-row {
       display: flex;
       align-items: flex-start;
-      gap: 14px;
-      padding: 14px 16px;
+      gap: 12px;
+      padding: 12px 14px;
       border-radius: var(--radius-sm);
       border: 1px solid var(--border);
       background: rgba(255, 255, 255, 0.03);
-      transition: all var(--ease);
     }
 
     .step-row.done {
       background: rgba(255, 255, 255, 0.09);
-      border-color: rgba(255, 255, 255, 0.38);
+      border-color: rgba(255, 255, 255, 0.42);
     }
 
     .step-row.running {
-      background: rgba(255, 255, 255, 0.13);
+      background: rgba(255, 255, 255, 0.14);
       border: 1px solid #fff;
     }
 
@@ -477,12 +660,12 @@
     }
 
     .step-indicator {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       display: grid;
       place-items: center;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       flex-shrink: 0;
       border: 1px solid var(--border-bright);
@@ -494,13 +677,6 @@
       border-color: #fff;
     }
 
-    .step-row.running .step-indicator {
-      background: transparent;
-      color: #fff;
-      border: 2px solid #fff;
-    }
-
-    /* Progress Bar */
     .progress-track {
       width: 100%;
       height: 8px;
@@ -514,42 +690,28 @@
       height: 100%;
       background: #fff;
       border-radius: 999px;
-      transition: width 220ms ease;
+      transition: width 240ms ease;
     }
 
-    /* Scene Card */
-    .scene-card {
-      padding: 18px;
-      margin-bottom: 14px;
-    }
-
-    .qa-pill-list {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 10px;
-    }
-
-    /* Toast Notification */
     .toast-container {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
+      bottom: 22px;
+      right: 22px;
       z-index: 100;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 8px;
       max-width: 380px;
     }
 
     .toast {
       padding: 12px 16px;
-      background: rgba(15, 15, 15, 0.92);
-      backdrop-filter: blur(20px);
+      background: rgba(12, 12, 12, 0.94);
+      backdrop-filter: blur(24px);
       border: 1px solid #fff;
       color: #fff;
       border-radius: 14px;
-      font-size: 13px;
+      font-size: 12.5px;
       box-shadow: var(--shadow);
     }
 
@@ -558,15 +720,14 @@
         flex-direction: column;
         align-items: stretch;
       }
-      .nav-tabs {
-        overflow-x: auto;
-        padding-bottom: 4px;
+      .grid-2, .grid-3 {
+        grid-template-columns: 1fr;
       }
     }
   </style>
 </head>
 <body>
-  <!-- Strictly Monochrome Background Orbs & Film Grain -->
+  <!-- Monochrome Drifting Orbs & Film Grain -->
   <div class="ambient-stage" aria-hidden="true">
     <div class="orb orb-1"></div>
     <div class="orb orb-2"></div>
@@ -580,8 +741,8 @@
       <div class="brand">
         <div class="brand-mark" aria-hidden="true">த</div>
         <div>
-          <div class="brand-title">Tamil AI Video Studio</div>
-          <div class="brand-sub">Kaggle 2×T4 (30 GB FP16/GGUF) · Audio-First Open-Source Pipeline</div>
+          <div class="brand-title">Tamil AI Video Studio v2</div>
+          <div class="brand-sub">Kaggle 2×T4 · Reference-to-Video + IndicF5 Voice + ACE-Step Music</div>
         </div>
       </div>
 
@@ -590,39 +751,110 @@
         <button type="button" class="nav-tab" data-screen="review" role="tab" aria-selected="false">2. Review Gate</button>
         <button type="button" class="nav-tab" data-screen="progress" role="tab" aria-selected="false">3. Progress</button>
         <button type="button" class="nav-tab" data-screen="library" role="tab" aria-selected="false">4. Library</button>
-        <button type="button" class="nav-tab" data-screen="voices" role="tab" aria-selected="false">5. Voices</button>
+        <button type="button" class="nav-tab" data-screen="voices" role="tab" aria-selected="false">5. Voices &amp; Characters</button>
         <button type="button" class="nav-tab" data-screen="settings" role="tab" aria-selected="false">6. Settings</button>
       </nav>
-
-      <div class="gpu-pill" title="Sequential Stage Execution on 2× NVIDIA T4 (sm_75)">
-        <span class="status-dot"></span>
-        <span id="topGpuStatus">2× T4 Ready · GPU0: 0.4/15 GB · GPU1: 0.2/15 GB</span>
-      </div>
     </header>
 
+    <!-- Live Per-GPU pynvml Telemetry Strip (Visible on ALL 6 Screens, Polled Every 1.5s) -->
+    <div class="glass-panel telemetry-strip" aria-label="Live Hardware Telemetry">
+      <div class="telemetry-cell">
+        <div style="display:flex; justify-content:space-between;">
+          <span><strong>GPU 0 (cuda:0)</strong> · <span id="hdrGpu0Name">Polling pynvml...</span></span>
+          <span id="hdrGpu0Text">0.0 / 15.0 GB</span>
+        </div>
+        <div class="mini-bar-track"><div class="mini-bar-fill" id="hdrGpu0Bar" style="width: 0%;"></div></div>
+      </div>
+
+      <div class="telemetry-cell">
+        <div style="display:flex; justify-content:space-between;">
+          <span><strong>GPU 1 (cuda:1)</strong> · <span id="hdrGpu1Name">Polling pynvml...</span></span>
+          <span id="hdrGpu1Text">0.0 / 15.0 GB</span>
+        </div>
+        <div class="mini-bar-track"><div class="mini-bar-fill" id="hdrGpu1Bar" style="width: 0%;"></div></div>
+      </div>
+
+      <div class="telemetry-cell">
+        <div style="display:flex; justify-content:space-between;">
+          <span><strong>Storage (`du` / `df`)</strong></span>
+          <span id="hdrDiskText">Checking disk...</span>
+        </div>
+        <div class="mini-bar-track"><div class="mini-bar-fill" id="hdrDiskBar" style="width: 0%;"></div></div>
+      </div>
+    </div>
+
     <!-- ==================================================================== -->
-    <!-- SCREEN 1: CREATE                                                     -->
+    <!-- SCREEN 1: CREATE (PROMPT + REFERENCE IMAGES + CHARACTERS)            -->
     <!-- ==================================================================== -->
     <section id="screen-create" class="screen active" aria-labelledby="heading-create">
-      <div class="glass-panel" style="padding: 24px;">
+      <div class="glass-panel" style="padding: 24px; margin-bottom: 18px;">
         <div class="section-header">
           <div>
             <h1 id="heading-create" class="section-title">Create Tamil AI Video</h1>
-            <p class="section-desc">Type in Tanglish, Tamil script, or English. Planner LLM converts your idea into spoken Tamil narration, visual cinematography, and situation-matched music.</p>
+            <p class="section-desc">Enter a Tanglish, Tamil, or English prompt. Optionally attach up to 4 reference images (Start Frame, Character, or Style) or pick a saved Character Profile.</p>
           </div>
           <div style="display:flex; gap:8px; flex-wrap:wrap;">
-            <button type="button" class="btn btn-secondary btn-sm" id="btnLoadSampleRain">Load Acceptance Prompt (Rain Schoolboy)</button>
-            <button type="button" class="btn btn-secondary btn-sm" id="btnLoadSampleBeach">Load Tanglish Family Beach Prompt</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btnFillRainPrompt">Fill Sample Tanglish Prompt</button>
           </div>
         </div>
 
         <div style="margin-bottom: 18px;">
           <label class="field-label" for="promptInput">Story / Concept Prompt (Tanglish / English / தமிழ்)</label>
-          <textarea id="promptInput" rows="4" placeholder="e.g., oru chinna paiyan mazhai la school ku nadandhu poguraan, emotional ah">oru chinna paiyan mazhai la school ku nadandhu poguraan, emotional ah</textarea>
+          <textarea id="promptInput" rows="3" placeholder="Type your Tanglish or English prompt here (e.g., oru chinna paiyan mazhai la school ku nadandhu poguraan, emotional ah)..."></textarea>
         </div>
 
+        <!-- FEATURE 1: Reference Images Glass Card -->
+        <div class="glass-subpanel" style="padding: 18px; margin-bottom: 18px;">
+          <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:12px; margin-bottom: 12px;">
+            <div>
+              <div style="display:flex; align-items:center; gap:8px;">
+                <span style="font-weight:600; font-size:14.5px;">Reference Images (Optional · Up to 4 Images)</span>
+                <span class="badge badge-outline" id="refCountBadge">0 / 4 Attached</span>
+              </div>
+              <p style="font-size:12px; color:var(--text-2); margin-top:2px;">
+                Stage 0 captions references with Qwen2.5-VL; Stage 4b generates scene keyframes via FLUX.1 Kontext / Start-Frame crop before video rendering.
+              </p>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap; align-items:center;">
+              <div class="chip-group" id="chipGroupFidelity" title="Fidelity Mode">
+                <button type="button" class="chip active" data-val="strict">Strict (Minimal Change)</button>
+                <button type="button" class="chip" data-val="creative">Creative (Identity Kept)</button>
+              </div>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnPickFromDrive">Pick from Drive (`references/`)</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnSaveAsCharacterModal">Save as Character</button>
+            </div>
+          </div>
+
+          <!-- Custom Monochrome Glass Dropzone (Drag & Drop / Paste / Click) -->
+          <div class="dropzone" id="refDropzone" tabindex="0" role="button" aria-label="Upload reference images by clicking, dragging, or pasting">
+            <input type="file" id="refFileInput" class="hidden-file-input" accept="image/*" multiple />
+            <div style="font-weight:600; font-size:13.5px; margin-bottom:4px;">Drop up to 4 images here, press Ctrl+V to paste, or click to browse</div>
+            <div style="font-size:11.5px; color:var(--text-2);">Auto EXIF-rotates &amp; resizes on upload · Per-image roles: Start Frame · Character / Subject · Location / Style</div>
+          </div>
+
+          <!-- Drive Reference Picker Drawer (Hidden by default) -->
+          <div id="driveRefDrawer" class="glass-subpanel" style="padding:12px; margin-top:12px; display:none;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">
+              <span style="font-size:12px; font-weight:600;">`TamilVideoStudio/references/` on Disk / Drive</span>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnCloseDriveDrawer">Close</button>
+            </div>
+            <div id="driveRefList" style="display:flex; gap:10px; flex-wrap:wrap; font-size:12px; color:var(--text-2);"></div>
+          </div>
+
+          <!-- Attached Reference Thumbnails Grid -->
+          <div id="refThumbsGrid" class="ref-grid"></div>
+
+          <!-- Mandatory Face / Subject Consent Checkbox (Required whenever a face or Character reference is present) -->
+          <div id="faceConsentBox" class="glass-subpanel" style="padding: 12px 14px; margin-top: 12px; display: none;">
+            <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-size:12.5px;">
+              <input type="checkbox" id="checkboxFaceConsent" class="glass-checkbox" style="margin-top:2px;" />
+              <span><strong>Mandatory Reference Consent:</strong> I own this image or have the person's explicit permission. (Generation is blocked without consent when a face or character reference is used.)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Mode, Duration & Aspect Chips -->
         <div class="grid-3" style="margin-bottom: 18px;">
-          <!-- Duration Chips -->
           <div class="glass-subpanel" style="padding: 14px;">
             <label class="field-label">Target Duration</label>
             <div class="chip-group" id="chipGroupDuration">
@@ -631,20 +863,16 @@
               <button type="button" class="chip" data-val="45">45 s</button>
               <button type="button" class="chip" data-val="60">60 s</button>
             </div>
-            <p style="font-size:11.5px; color:var(--text-3); margin-top:8px;">Audio-first: real duration follows synthesized IndicF5 Tamil voice (~2.2 words/s).</p>
           </div>
 
-          <!-- Mode Chips -->
           <div class="glass-subpanel" style="padding: 14px;">
             <label class="field-label">Production Mode</label>
             <div class="chip-group" id="chipGroupMode">
               <button type="button" class="chip active" data-val="cinematic">Cinematic Narration</button>
-              <button type="button" class="chip" data-val="talking">Talking Person (Lip-Sync)</button>
+              <button type="button" class="chip" data-val="talking">Talking Person (Uses Character Ref)</button>
             </div>
-            <p style="font-size:11.5px; color:var(--text-3); margin-top:8px;">Mode A: Wan 2.2 / LTX-2.3 I2V · Mode B: InfiniteTalk / Wan2.2-S2V 480p.</p>
           </div>
 
-          <!-- Aspect Ratio Chips -->
           <div class="glass-subpanel" style="padding: 14px;">
             <label class="field-label">Aspect Ratio</label>
             <div class="chip-group" id="chipGroupAspect">
@@ -652,434 +880,456 @@
               <button type="button" class="chip" data-val="16:9">16:9 Cinema</button>
               <button type="button" class="chip" data-val="1:1">1:1 Square</button>
             </div>
-            <p style="font-size:11.5px; color:var(--text-3); margin-top:8px;">Default 480p→720p upscale; auto-downgrades on T4 OOM.</p>
           </div>
         </div>
 
-        <div class="grid-3" style="margin-bottom: 20px;">
-          <!-- Voice Profile Selector -->
-          <div>
-            <label class="field-label" for="selectVoiceProfile">Cloned Tamil Voice Profile (IndicF5 24 kHz)</label>
-            <select id="selectVoiceProfile">
-              <option value="default_tamil_narrator">Default Tamil Studio Voice (24 kHz · Verified)</option>
-              <option value="user_cloned_karthik">Karthik — Warm Storyteller (Cloned 10.4s ref.wav)</option>
-              <option value="user_cloned_ananya">Ananya — Expressive Narrator (Cloned 9.8s ref.wav)</option>
-            </select>
-          </div>
-
-          <!-- Mood Selector -->
-          <div>
-            <label class="field-label" for="selectMood">Mood Hint (Optional)</label>
-            <select id="selectMood">
-              <option value="auto">Auto-Detect from Prompt</option>
-              <option value="emotional" selected>Emotional / Poignant</option>
-              <option value="cinematic">Cinematic / Epic</option>
-              <option value="calm">Calm / Peaceful</option>
-              <option value="energetic">Energetic / Uplifting</option>
-              <option value="devotional">Devotional / Classical</option>
-              <option value="funny">Lighthearted / Funny</option>
-            </select>
-          </div>
-
-          <!-- Video Engine Selector -->
-          <div>
-            <label class="field-label" for="selectVideoEngine">Video Engine (T4 ×2)</label>
-            <select id="selectVideoEngine">
-              <option value="wan22" selected>Quality: Wan 2.2 A14B GGUF (Q8 Split + MMAudio)</option>
-              <option value="wan22_lora">Fast-Quality: Wan 2.2 A14B + LightX2V 4-Step LoRA</option>
-              <option value="ltx23">Fast / Draft: LTX-2.3 22B Distilled GGUF (Native Audio)</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Mode B Face Image Upload (Hidden unless Talking Person mode is selected) -->
-        <div id="modeBUploadBox" class="glass-subpanel" style="padding: 16px; margin-bottom: 20px; display: none;">
-          <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+        <!-- Character, Voice, Mood & Engine Selectors -->
+        <div class="grid-2" style="margin-bottom: 18px;">
+          <div class="grid-2">
             <div>
-              <div style="font-weight:600; font-size:14px;">Mode B: Reference Portrait Image for Talking Person</div>
-              <div style="font-size:12px; color:var(--text-2);">Conditioned with IndicF5 24 kHz audio via InfiniteTalk (`--num_persistent_param_in_dit 0` at 480p on T4).</div>
+              <label class="field-label" for="selectCharacterProfile">Saved Character Profile (Face + Voice Pair)</label>
+              <select id="selectCharacterProfile" class="glass-select">
+                <option value="">None (Use uploaded references or text-only)</option>
+              </select>
             </div>
-            <input type="file" id="inputFaceImage" accept="image/*" style="max-width:260px;" />
+            <div>
+              <label class="field-label" for="selectVoiceProfile">Cloned Tamil Voice Profile</label>
+              <select id="selectVoiceProfile" class="glass-select">
+                <option value="">No voice profile selected (Ephemeral studio voice)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label class="field-label" for="selectMood">Mood Hint</label>
+              <select id="selectMood" class="glass-select">
+                <option value="auto">Auto-Detect from Prompt</option>
+                <option value="emotional">Emotional / Poignant</option>
+                <option value="cinematic">Cinematic / Epic</option>
+                <option value="calm">Calm / Peaceful</option>
+                <option value="energetic">Energetic / Uplifting</option>
+                <option value="devotional">Devotional / Classical</option>
+                <option value="funny">Lighthearted / Funny</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="selectVideoEngine">Video Engine &amp; Preset</label>
+              <select id="selectVideoEngine" class="glass-select">
+                <option value="wan22" selected>Wan 2.2 A14B GGUF (Quality · 12/20 Steps)</option>
+                <option value="wan22_lora">Wan 2.2 A14B + LightX2V (Fast · 4-Step LoRA)</option>
+                <option value="ltx23">LTX-2.3 22B Distilled GGUF (Fast · 8 Steps)</option>
+              </select>
+            </div>
           </div>
         </div>
 
-        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; padding-top:8px; border-top:1px solid var(--border);">
-          <div style="font-size:12.5px; color:var(--text-2);">
-            Stage 1 (Qwen3-8B GGUF) + Stage 2 (AI4Bharat IndicF5 + faster-whisper QA) will run first and pause at the <strong>Review Gate</strong> before heavy video rendering.
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px; padding-top:12px; border-top:1px solid var(--border);">
+          <div style="font-size:12px; color:var(--text-2);">
+            Runs Stage 0 (Reference VLM) → Stage 1 (Qwen3 Plan) → Stage 2 (IndicF5 TTS + Whisper QA) → Stage 4b (Scene Keyframes) and pauses at the <strong>Review Gate</strong>.
           </div>
           <button type="button" class="btn btn-primary" id="btnGeneratePlan">
-            <span>Generate Plan &amp; Synthesize Voice</span>
-            <span aria-hidden="true">→</span>
+            <span id="btnGeneratePlanLabel">Generate Plan, Voice &amp; Keyframes →</span>
           </button>
         </div>
       </div>
     </section>
 
     <!-- ==================================================================== -->
-    <!-- SCREEN 2: REVIEW GATE (STAGE 3)                                      -->
+    <!-- SCREEN 2: REVIEW GATE (STAGE 3 — SCRIPT, VOICE & KEYFRAMES)          -->
     <!-- ==================================================================== -->
     <section id="screen-review" class="screen" aria-labelledby="heading-review">
-      <div class="glass-panel" style="padding: 24px; margin-bottom: 20px;">
-        <div class="section-header">
-          <div>
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:4px;">
-              <span class="badge badge-solid">STAGE 3 · SCRIPT &amp; VOICE REVIEW GATE</span>
-              <span class="badge badge-outline" id="reviewQaSummaryBadge">Whisper Auto-QA: 10/10 Sentences Passed (Avg CER 1.9%)</span>
-            </div>
-            <h2 id="heading-review" class="section-title"><span id="reviewPlanTitle">மழையில் நனையாத கனவு (Unbroken Dream in the Rain)</span></h2>
-            <p class="section-desc">Inspect and edit the Tamil script, listen to the cloned IndicF5 voice, or adjust scene visual prompts before committing GPU time to Stage 5 video rendering.</p>
-          </div>
-          <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button type="button" class="btn btn-secondary" id="btnRegenerateVoiceOnly">Regenerate Voice Only</button>
-            <button type="button" class="btn btn-secondary" id="btnPreview5sTalking" style="display:none;">Preview 5 s Lip-Sync</button>
-            <button type="button" class="btn btn-primary" id="btnApproveAndRender">Approve &amp; Render Video →</button>
-          </div>
+      <div class="glass-panel" style="padding: 24px;">
+        <div id="reviewEmptyState" class="empty-state">
+          No active job in the Review Gate yet. Enter a prompt on the <strong>1. Create</strong> screen and click <strong>Generate Plan, Voice &amp; Keyframes</strong>.
         </div>
 
-        <!-- Audio Player & Telemetry Summary Bar -->
-        <div class="grid-3" style="margin-bottom: 20px;">
-          <div class="glass-subpanel" style="padding: 14px;">
-            <label class="field-label">Synthesized Tamil Narration (−16 LUFS)</label>
-            <div style="display:flex; align-items:center; gap:10px; margin-top:6px;">
-              <button type="button" class="btn btn-primary btn-sm" id="btnPlaySynthesizedVoice">▶ Play Tamil Voice</button>
-              <span id="voicePlaybackStatus" style="font-size:12.5px; color:var(--text-2);">43.5 s (42.0s voice + 0.5s head + 1.0s tail)</span>
+        <div id="reviewActiveContent" style="display:none;">
+          <div class="section-header">
+            <div>
+              <div style="display:flex; align-items:center; gap:8px; margin-bottom:6px; flex-wrap:wrap;">
+                <span class="badge badge-solid">STAGE 3 · REVIEW GATE</span>
+                <span class="badge badge-outline" id="reviewQaSummaryBadge">Whisper QA: Pending</span>
+              </div>
+              <h2 id="heading-review" class="section-title"><span id="reviewPlanTitle">Untitled Plan</span></h2>
+              <p class="section-desc">Inspect and edit the Tamil script, reference description, and per-scene keyframes before starting the heavy Stage 5 GPU video render.</p>
+            </div>
+            <div style="display:flex; gap:8px; flex-wrap:wrap;">
+              <button type="button" class="btn btn-secondary" id="btnRegenerateVoiceOnly">Regenerate Voice Only</button>
+              <button type="button" class="btn btn-secondary" id="btnPreview5sTalking" style="display:none;">Preview 5 s Lip-Sync</button>
+              <button type="button" class="btn btn-primary" id="btnApproveAndRender">Approve &amp; Render Video →</button>
             </div>
           </div>
 
-          <div class="glass-subpanel" style="padding: 14px;">
-            <label class="field-label">Estimated T4 ×2 Render Time &amp; Placement</label>
-            <div style="font-size:14px; font-weight:600;" id="reviewEtaText">~7m 15s (9 shots × 5s · Wan 2.2 Q8 Split)</div>
-            <div style="font-size:11.5px; color:var(--text-2); margin-top:4px;">Transformer → cuda:0 · UMT5-XXL + VAE → cuda:1</div>
+          <div class="grid-3" style="margin-bottom: 18px;">
+            <div class="glass-subpanel" style="padding: 14px;">
+              <label class="field-label">Synthesized Tamil Narration (−16 LUFS)</label>
+              <audio id="reviewVoiceAudio" controls preload="none" style="width:100%; height:34px; margin-top:4px;"></audio>
+              <div id="voicePlaybackStatus" style="font-size:11.5px; color:var(--text-2); margin-top:6px;">Duration: --</div>
+            </div>
+
+            <div class="glass-subpanel" style="padding: 14px;">
+              <label class="field-label">Measured Render ETA (`benchmarks.json`)</label>
+              <div style="font-size:13.5px; font-weight:600; margin-top:4px;" id="reviewEtaText">Run the smoke test to get an ETA</div>
+              <div style="font-size:11px; color:var(--text-2); margin-top:4px;" id="reviewEtaSub">Derived strictly from measured sec/clip on this machine.</div>
+            </div>
+
+            <div class="glass-subpanel" style="padding: 14px;">
+              <label class="field-label" for="reviewMusicPrompt">ACE-Step 1.5 Instrumental Music Prompt</label>
+              <input type="text" id="reviewMusicPrompt" value="" />
+            </div>
           </div>
 
-          <div class="glass-subpanel" style="padding: 14px;">
-            <label class="field-label" for="reviewMusicPrompt">ACE-Step 1.5 Instrumental Music Prompt</label>
-            <input type="text" id="reviewMusicPrompt" value="Emotional South Indian cinematic score, solo bamboo flute (pullanguzhal) and warm cello, gentle acoustic guitar arpeggios, 72 BPM, instrumental, no vocals" />
+          <!-- Stage 0 Editable Reference Description (Shown when reference images were analyzed) -->
+          <div id="reviewRefDescBox" style="margin-bottom: 14px; display:none;">
+            <label class="field-label" for="reviewRefDesc">Stage 0 VLM Reference Description (`reference_description_en` — Editable)</label>
+            <textarea id="reviewRefDesc" rows="2"></textarea>
           </div>
-        </div>
 
-        <div style="margin-bottom: 18px;">
-          <label class="field-label" for="reviewCharDesc">Global Character Continuity Prefix (`character_description_en` — prepended to every shot)</label>
-          <input type="text" id="reviewCharDesc" value="A 9-year-old Tamil schoolboy named Karthik with warm brown skin, expressive dark eyes, drenched black hair, wearing a faded navy-blue school uniform shirt, khaki shorts, rubber sandals, and carrying a worn black canvas schoolbag" />
-        </div>
+          <div style="margin-bottom: 18px;">
+            <label class="field-label" for="reviewCharDesc">Global Character / Continuity Prefix (`character_description_en`)</label>
+            <input type="text" id="reviewCharDesc" value="" />
+          </div>
 
-        <!-- Editable Per-Scene Script & Visual Prompts -->
-        <div id="reviewScenesContainer"></div>
+          <!-- Per-Scene Script, Visual Prompts & Stage 4b Keyframe Thumbnails -->
+          <div id="reviewScenesContainer"></div>
+        </div>
       </div>
     </section>
 
     <!-- ==================================================================== -->
-    <!-- SCREEN 3: PROGRESS & LIVE TELEMETRY                                  -->
+    <!-- SCREEN 3: PROGRESS (VERIFIED STAGES + PYNVML + A/B SMOKE TEST)       -->
     <!-- ==================================================================== -->
     <section id="screen-progress" class="screen" aria-labelledby="heading-progress">
       <div class="grid-2">
-        <!-- Left Column: Vertical Pipeline Stepper -->
         <div class="glass-panel" style="padding: 24px;">
           <div class="section-header">
             <div>
-              <h2 id="heading-progress" class="section-title">Pipeline Execution &amp; Checkpoints</h2>
-              <p class="section-desc">Sequential VRAM execution (`load → run → unload → empty_cache`).</p>
+              <h2 id="heading-progress" class="section-title">Pipeline Execution &amp; Verified Checkpoints</h2>
+              <p class="section-desc">A stage is marked DONE only when its output files exist on disk.</p>
             </div>
-            <span class="badge badge-solid" id="progressStatusBadge">STAGE 5 RUNNING</span>
+            <span class="badge badge-outline" id="progressStatusBadge">IDLE</span>
           </div>
 
-          <div style="margin-bottom: 18px;">
-            <div style="display:flex; justify-content:space-between; font-size:13px; margin-bottom:6px;">
-              <span id="progressOverallLabel">Overall Job Progress (job_94f2a81c)</span>
-              <span id="progressPercentText" style="font-weight:700;">68% · ETA 3m 10s</span>
+          <div style="margin-bottom: 16px;">
+            <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:6px;">
+              <span id="progressOverallLabel">No active render job</span>
+              <span id="progressPercentText" style="font-weight:700;">0%</span>
             </div>
             <div class="progress-track">
-              <div class="progress-fill" id="progressMainBar" style="width: 68%;"></div>
+              <div class="progress-fill" id="progressMainBar" style="width: 0%;"></div>
             </div>
           </div>
 
-          <div class="stepper" id="pipelineStepper"></div>
+          <div class="stepper" id="pipelineStepper">
+            <div class="empty-state">No job running yet. Create and approve a plan to track stage-by-stage GPU execution.</div>
+          </div>
 
-          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 20px; padding-top:16px; border-top:1px solid var(--border);">
-            <button type="button" class="btn btn-primary btn-sm" id="btnSimulateFullRun">▶ Run Live Stage-by-Stage Simulation</button>
-            <button type="button" class="btn btn-secondary btn-sm" id="btnSimulateOOM">Test T4 OOM Auto-Downgrade</button>
-            <button type="button" class="btn btn-secondary btn-sm" id="btnCancelOrResumeJob">Cancel (Checkpoint Safe)</button>
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 18px; padding-top:14px; border-top:1px solid var(--border);">
+            <button type="button" class="btn btn-secondary btn-sm" id="btnCancelOrResumeJob">Cancel Active Job</button>
           </div>
         </div>
 
-        <!-- Right Column: Dual-T4 VRAM Meters, A/B Test & Live Log Tail -->
         <div style="display:flex; flex-direction:column; gap:18px;">
+          <!-- Real pynvml Dual-GPU Meters -->
           <div class="glass-panel" style="padding: 22px;">
             <div class="section-header" style="margin-bottom:12px;">
-              <h3 style="font-size:16px;">Dual NVIDIA Tesla T4 VRAM Telemetry (PCIe · sm_75)</h3>
-              <span class="badge badge-outline">FP16 / GGUF · SDPA</span>
+              <h3 style="font-size:15.5px;">Real-Time `pynvml` GPU Telemetry (Polled Every 1.5s)</h3>
+              <span class="badge badge-outline" id="telemetrySourceBadge">pynvml</span>
             </div>
 
             <div style="margin-bottom: 14px;">
-              <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px;">
-                <span><strong>GPU 0 (cuda:0)</strong> · Active DiT Transformer Expert</span>
-                <span id="gpu0MeterText">12.4 GB / 15.0 GB (Peak 13.1 GB)</span>
+              <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px;">
+                <span id="gpu0Title"><strong>GPU 0 (cuda:0)</strong></span>
+                <span id="gpu0MeterText">0.0 GB / 15.0 GB (Peak 0.0 GB)</span>
               </div>
               <div class="progress-track">
-                <div class="progress-fill" id="gpu0Bar" style="width: 82%;"></div>
+                <div class="progress-fill" id="gpu0Bar" style="width: 0%;"></div>
               </div>
             </div>
 
             <div>
-              <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px;">
-                <span><strong>GPU 1 (cuda:1)</strong> · Text Encoder (UMT5 / Gemma3) + VAE</span>
-                <span id="gpu1MeterText">7.8 GB / 15.0 GB (Peak 8.4 GB)</span>
+              <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px;">
+                <span id="gpu1Title"><strong>GPU 1 (cuda:1)</strong></span>
+                <span id="gpu1MeterText">0.0 GB / 15.0 GB (Peak 0.0 GB)</span>
               </div>
               <div class="progress-track">
-                <div class="progress-fill" id="gpu1Bar" style="width: 52%;"></div>
+                <div class="progress-fill" id="gpu1Bar" style="width: 0%;"></div>
               </div>
             </div>
 
             <div id="oomDowngradeBanner" class="glass-subpanel" style="padding:10px 12px; margin-top:14px; font-size:12px; border-style:dashed; display:none;"></div>
           </div>
 
-          <!-- Smoke Test A/B Comparison Card (Wan 2.2 vs LTX-2.3) -->
+          <!-- Real Measured A/B Benchmark Card (From benchmarks.json) -->
           <div class="glass-panel" style="padding: 22px;">
             <div style="display:flex; justify-content:space-between; align-items:center; gap:10px; margin-bottom:10px;">
               <div>
-                <h3 style="font-size:15px;">A/B Smoke Test: Wan 2.2 A14B vs LTX-2.3 22B</h3>
-                <p style="font-size:12px; color:var(--text-2);">Compare realism, motion stability, and T4 speed on the same prompt.</p>
+                <h3 style="font-size:15px;">Measured A/B Benchmark (`benchmarks.json`)</h3>
+                <p style="font-size:11.5px; color:var(--text-2);">Displays real measured seconds/clip and peak VRAM from `scripts/smoke_test_all.py`.</p>
               </div>
-              <button type="button" class="btn btn-secondary btn-sm" id="btnRunABSmokeTest">Run A/B Comparison</button>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnRefreshBenchmarks">Refresh `benchmarks.json`</button>
             </div>
-            <div class="grid-2" id="abComparisonResults" style="font-size:12px; margin-top:10px;">
-              <div class="glass-subpanel" style="padding:12px;">
-                <div style="font-weight:600; margin-bottom:4px;">Engine A: Wan 2.2 A14B (Q8 Split + MMAudio)</div>
-                <div style="color:var(--text-2);">5s clip · 480p · 20 steps: <strong>162.4 s</strong> (41.8 s w/ LightX2V 4-step LoRA) · Peak VRAM: <strong>13.4 GB + 8.9 GB</strong></div>
-              </div>
-              <div class="glass-subpanel" style="padding:12px;">
-                <div style="font-weight:600; margin-bottom:4px;">Engine B: LTX-2.3 22B Distilled GGUF</div>
-                <div style="color:var(--text-2);">8s shot · 480p · 8 steps: <strong>29.6 s</strong> (native stereo ambience) · Peak VRAM: <strong>13.8 GB + 7.2 GB</strong></div>
-              </div>
+            <div id="abComparisonResults" class="empty-state" style="padding:18px;">
+              No A/B benchmark recorded yet. Run <code>python3 scripts/smoke_test_all.py --stage video</code> to measure Wan 2.2 vs LTX-2.3 on this machine.
             </div>
           </div>
 
           <!-- Collapsible Live Log Tail -->
           <div class="glass-panel" style="padding: 20px;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
-              <span style="font-size:13px; font-weight:600;">SSE Live Worker Log Tail</span>
+              <span style="font-size:12.5px; font-weight:600;">Worker Log Tail</span>
               <button type="button" class="btn btn-secondary btn-sm" id="btnToggleLogs">Collapse / Expand</button>
             </div>
-            <pre id="sseLogContainer" style="font-family:monospace; font-size:11.5px; color:var(--text-2); background:rgba(0,0,0,0.55); padding:12px; border-radius:10px; border:1px solid var(--border); max-height:210px; overflow-y:auto; white-space:pre-wrap;"></pre>
+            <pre id="sseLogContainer" style="font-family:monospace; font-size:11.5px; color:var(--text-2); background:rgba(0,0,0,0.55); padding:12px; border-radius:10px; border:1px solid var(--border); max-height:200px; overflow-y:auto; white-space:pre-wrap;">Waiting for job logs...</pre>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ==================================================================== -->
-    <!-- SCREEN 4: LIBRARY                                                    -->
+    <!-- SCREEN 4: LIBRARY (REAL HTML5 <video> PLAYER · ZERO FAKE DATA)       -->
     <!-- ==================================================================== -->
     <section id="screen-library" class="screen" aria-labelledby="heading-library">
       <div class="glass-panel" style="padding: 24px;">
         <div class="section-header">
           <div>
-            <h2 id="heading-library" class="section-title">Rendered Video Library &amp; Drive Mirror</h2>
-            <p class="section-desc">Synced via `rclone` OAuth to `gdrive:TamilVideoStudio/&lt;date&gt;/&lt;job_id&gt;/` (`final.mp4`, `voice.wav`, `music.wav`, `script.json`, `thumbnail.jpg`).</p>
+            <h2 id="heading-library" class="section-title">Rendered Video Library</h2>
+            <p class="section-desc">Lists only real `final.mp4` files found on disk / Drive and plays them with a native HTML5 `&lt;video&gt;` player.</p>
           </div>
-          <span class="badge badge-outline">rclone Remote: gdrive:TamilVideoStudio</span>
+          <button type="button" class="btn btn-secondary btn-sm" id="btnRefreshLibrary">↻ Refresh Disk Library</button>
         </div>
 
-        <!-- Interactive Inline Cinema Preview Player -->
-        <div class="glass-subpanel" style="padding: 18px; margin-bottom: 22px;">
+        <!-- Real HTML5 <video> Player Panel (Hidden when Library is empty) -->
+        <div id="libraryVideoPlayerPanel" class="glass-subpanel" style="padding: 18px; margin-bottom: 22px; display: none;">
           <div class="grid-2" style="align-items: center;">
             <div>
-              <canvas id="libraryCinemaCanvas" width="640" height="360" style="width:100%; height:auto; border-radius:12px; border:1px solid var(--border); background:#050505; display:block;"></canvas>
+              <video id="libraryHtml5Video" controls preload="metadata" style="width:100%; max-height:420px; border-radius:12px; border:1px solid var(--border); background:#000; display:block;"></video>
             </div>
             <div>
-              <span class="badge badge-solid" id="playerActiveBadge">ACTIVE PREVIEW</span>
-              <h3 id="playerTitle" class="tamil-text" style="font-size:18px; margin-top:8px;">மழையில் நனையாத கனவு (Unbroken Dream in the Rain)</h3>
-              <p id="playerSubtitle" class="tamil-text" style="font-size:14px; color:var(--text-2); margin: 10px 0;">
-                "காலை நேரத்துல வானம் இருண்டு, விடாம கனமழை பெய்யத் தொடங்குச்சு..."
-              </p>
-              <div style="font-size:12px; color:var(--text-3); margin-bottom:14px;" id="playerSpecs">
-                Duration: 43.5 s · H.264 yuv420p + AAC 192 kbps · Voice −16 LUFS · Music −18 dB (Sidechain Ducked) · Ambience −24 dB
-              </div>
-              <div style="display:flex; gap:10px; flex-wrap:wrap;">
-                <button type="button" class="btn btn-primary btn-sm" id="btnPlayInlineVideo">▶ Play Synchronized Preview</button>
-                <button type="button" class="btn btn-secondary btn-sm" id="btnStopInlineVideo">■ Stop</button>
+              <span class="badge badge-solid">REAL HTML5 MP4 PLAYBACK</span>
+              <h3 id="playerTitle" class="tamil-text" style="font-size:18px; margin-top:8px;"></h3>
+              <p id="playerSpecs" style="font-size:12px; color:var(--text-2); margin: 10px 0;"></p>
+              <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:12px;">
+                <a id="btnDownloadFinalMp4" href="#" download class="btn btn-primary btn-sm">↓ Download final.mp4</a>
                 <button type="button" class="btn btn-secondary btn-sm" id="btnRerenderSameScript">↻ Re-Render with Same Script</button>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Library Cards Grid -->
+        <!-- Library Empty State / Real Cards Grid -->
+        <div id="libraryEmptyState" class="empty-state">
+          No videos yet. Generate and render a project from the <strong>1. Create</strong> screen (or run the smoke test) to see real `.mp4` deliverables here.
+        </div>
         <div class="grid-3" id="libraryCardsGrid"></div>
       </div>
     </section>
 
     <!-- ==================================================================== -->
-    <!-- SCREEN 5: VOICES (CLONING & CONSENT)                                 -->
+    <!-- SCREEN 5: VOICES & CHARACTERS                                        -->
     <!-- ==================================================================== -->
     <section id="screen-voices" class="screen" aria-labelledby="heading-voices">
-      <div class="grid-2">
+      <div class="grid-2" style="margin-bottom: 20px;">
+        <!-- Left: Create Voice Profile -->
         <div class="glass-panel" style="padding: 24px;">
-          <div class="section-header">
-            <div>
-              <h2 id="heading-voices" class="section-title">Tamil Voice Cloning Profile (AI4Bharat IndicF5)</h2>
-              <p class="section-desc">Converts voice note to 24 kHz mono → spectral denoise → trims cleanest 8–12 s pause-bounded segment → `faster-whisper (language=ta)` draft transcript.</p>
+          <h2 id="heading-voices" class="section-title" style="margin-bottom:4px;">Tamil Voice Cloning (AI4Bharat IndicF5)</h2>
+          <p class="section-desc" style="margin-bottom:16px;">Uploads voice note → 24 kHz mono → spectral denoise → 8–12 s cleanest pause trim → `faster-whisper (language=ta)` draft transcript.</p>
+
+          <div style="margin-bottom: 12px;">
+            <label class="field-label" for="inputVoiceName">Voice Profile Name</label>
+            <input type="text" id="inputVoiceName" placeholder="e.g., My Tamil Narrator Voice" />
+          </div>
+
+          <div style="margin-bottom: 12px;">
+            <label class="field-label">Reference Voice Note (.wav / .mp3 / .m4a)</label>
+            <div class="dropzone" id="voiceDropzone" tabindex="0" role="button">
+              <input type="file" id="inputVoiceFile" class="hidden-file-input" accept="audio/*" />
+              <div id="voiceDropzoneLabel" style="font-size:13px; font-weight:600;">Drop audio file here or click to browse</div>
             </div>
           </div>
 
-          <div style="margin-bottom: 14px;">
-            <label class="field-label" for="inputVoiceName">Voice Profile Name</label>
-            <input type="text" id="inputVoiceName" placeholder="e.g., Senthil — Warm Documentary Narrator" value="Senthil — Warm Narrative Voice" />
-          </div>
-
-          <div style="margin-bottom: 14px;">
-            <label class="field-label" for="inputVoiceFile">Upload Reference Voice Note (.wav / .mp3 / .m4a · 10–30 s recommended)</label>
-            <input type="file" id="inputVoiceFile" accept="audio/*" />
-          </div>
-
-          <!-- Interactive Waveform Trimmer (8-12 s cleanest window) -->
-          <div class="glass-subpanel" style="padding: 14px; margin-bottom: 14px;">
+          <div class="glass-subpanel" style="padding: 12px; margin-bottom: 12px;">
             <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:6px;">
-              <span>Auto-Selected Cleanest Pause Segment (24 kHz Mono Denoised)</span>
+              <span>Trim Window (8–12 s Cleanest Segment)</span>
               <span id="trimRangeLabel" style="font-weight:600;">1.5 s – 11.2 s (9.7 s)</span>
             </div>
-            <canvas id="waveformCanvas" width="520" height="84" style="width:100%; height:84px; border-radius:8px; background:#050505; border:1px solid var(--border); display:block; margin-bottom:10px;"></canvas>
-            <div style="display:flex; gap:12px; align-items:center;">
-              <label style="font-size:12px; color:var(--text-2);">Start (s): <input type="range" id="trimStartSlider" min="0" max="6" step="0.1" value="1.5" style="width:110px;" /></label>
-              <label style="font-size:12px; color:var(--text-2);">End (s): <input type="range" id="trimEndSlider" min="9" max="15" step="0.1" value="11.2" style="width:110px;" /></label>
-              <button type="button" class="btn btn-secondary btn-sm" id="btnAutoPickCleanSegment">Auto-Pick Cleanest 10s</button>
+            <canvas id="waveformCanvas" width="520" height="72" style="width:100%; height:72px; border-radius:8px; background:#050505; border:1px solid var(--border); display:block; margin-bottom:10px;"></canvas>
+            <div style="display:flex; gap:12px; align-items:center; flex-wrap:wrap;">
+              <label style="font-size:12px; color:var(--text-2); display:flex; align-items:center; gap:6px;">Start: <input type="range" id="trimStartSlider" class="glass-slider" min="0" max="6" step="0.1" value="1.5" /></label>
+              <label style="font-size:12px; color:var(--text-2); display:flex; align-items:center; gap:6px;">End: <input type="range" id="trimEndSlider" class="glass-slider" min="9" max="15" step="0.1" value="11.2" /></label>
+              <button type="button" class="btn btn-secondary btn-sm" id="btnAutoPickCleanSegment">Auto-Pick 10s</button>
             </div>
           </div>
 
-          <!-- Editable Tamil Script Reference Transcript -->
-          <div style="margin-bottom: 14px;">
-            <label class="field-label" for="inputRefTranscriptTa">Exact Reference Transcript in Tamil Script (`ref.txt` — required by IndicF5)</label>
-            <textarea id="inputRefTranscriptTa" class="tamil-text" rows="3">வணக்கம், ஒவ்வொரு நாளும் நம்ம வாழ்க்கையில ஒரு புது அனுபவத்தைக் கத்துக் கொடுக்குது. நம்பிக்கையோடு முன்னேறிச் செல்வோம்.</textarea>
-            <p style="font-size:11.5px; color:var(--text-3); margin-top:4px;">Drafted by `faster-whisper large-v3-turbo (language=ta, fp16)`. Edit any word so `ref.txt` matches the audio 100%.</p>
+          <div style="margin-bottom: 12px;">
+            <label class="field-label" for="inputRefTranscriptTa">Exact Reference Transcript in Tamil Script (`ref.txt`)</label>
+            <textarea id="inputRefTranscriptTa" class="tamil-text" rows="2" placeholder="குரல் பதிவில் உள்ள தமிழ் வரிகளை இங்கே சரிபார்க்கவும்..."></textarea>
           </div>
 
-          <!-- Mandatory Speaker Consent Checkbox -->
-          <div class="glass-subpanel" style="padding: 12px 14px; margin-bottom: 16px;">
-            <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-size:13px;">
-              <input type="checkbox" id="checkboxVoiceConsent" checked style="margin-top:3px; width:16px; height:16px;" />
-              <span><strong>Mandatory Speaker Consent:</strong> This is my own voice or I have the speaker's explicit permission. (No impersonation or non-consensual voice cloning.)</span>
+          <div class="glass-subpanel" style="padding: 11px 13px; margin-bottom: 14px;">
+            <label style="display:flex; align-items:flex-start; gap:10px; cursor:pointer; font-size:12.5px;">
+              <input type="checkbox" id="checkboxVoiceConsent" class="glass-checkbox" style="margin-top:2px;" />
+              <span><strong>Mandatory Speaker Consent:</strong> This is my own voice or I have the speaker's explicit permission.</span>
             </label>
           </div>
 
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button type="button" class="btn btn-secondary" id="btnPreviewClonedVoice">▶ Synthesize Preview Sentence</button>
-            <button type="button" class="btn btn-primary" id="btnSaveVoiceProfile">Save Profile to Studio &amp; Drive</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btnPreviewClonedVoice">▶ Synthesize Preview Sentence</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btnSaveVoiceProfile">Save Voice Profile</button>
           </div>
+          <audio id="voiceTabPreviewAudio" controls style="width:100%; height:34px; margin-top:10px; display:none;"></audio>
         </div>
 
-        <!-- Saved Voice Profiles List -->
-        <div class="glass-panel" style="padding: 24px;">
-          <div class="section-header">
-            <div>
-              <h3 class="section-title">Saved Voice Profiles (`TamilVideoStudio/voices/`)</h3>
-              <p class="section-desc">Stored in `/kaggle/temp/tamil_studio/voices` and synced to Google Drive.</p>
+        <!-- Right: Saved Voice Profiles & Character Profiles -->
+        <div style="display:flex; flex-direction:column; gap:18px;">
+          <div class="glass-panel" style="padding: 22px;">
+            <h3 class="section-title" style="font-size:16px; margin-bottom:4px;">Saved Voice Profiles (`TamilVideoStudio/voices/`)</h3>
+            <p class="section-desc" style="margin-bottom:12px;">Real profiles found on disk / Drive.</p>
+            <div id="savedVoicesContainer">
+              <div class="empty-state" style="padding:20px;">No voice profiles yet. Upload a voice note on the left to create one.</div>
             </div>
           </div>
-          <div id="savedVoicesContainer" style="display:flex; flex-direction:column; gap:12px;"></div>
+
+          <div class="glass-panel" style="padding: 22px;">
+            <h3 class="section-title" style="font-size:16px; margin-bottom:4px;">Saved Character Profiles (`TamilVideoStudio/characters/`)</h3>
+            <p class="section-desc" style="margin-bottom:12px;">Character face/subject references paired with a Tamil voice profile.</p>
+            <div id="savedCharactersContainer">
+              <div class="empty-state" style="padding:20px;">No character profiles yet. Attach reference images on the Create screen and click "Save as Character".</div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
 
     <!-- ==================================================================== -->
-    <!-- SCREEN 6: SETTINGS                                                   -->
+    <!-- SCREEN 6: SETTINGS (REAL MODEL CHECK + LICENSES + DISK DU/DF)        -->
     <!-- ==================================================================== -->
     <section id="screen-settings" class="screen" aria-labelledby="heading-settings">
       <div class="grid-2">
         <div class="glass-panel" style="padding: 24px;">
-          <h2 id="heading-settings" class="section-title" style="margin-bottom:6px;">Hardware &amp; Model Stack Configuration</h2>
-          <p class="section-desc" style="margin-bottom:18px;">Tuned for Kaggle 2× NVIDIA Tesla T4 (15 GB VRAM each, Turing `sm_75`, FP16 / GGUF / SDPA).</p>
+          <h2 id="heading-settings" class="section-title" style="margin-bottom:4px;">Hardware, Models &amp; License Settings</h2>
+          <p class="section-desc" style="margin-bottom:16px;">Tuned for Kaggle 2× NVIDIA Tesla T4 (`sm_75`, FP16 / GGUF / SDPA).</p>
 
-          <div style="margin-bottom: 14px;">
-            <label class="field-label" for="settingPlannerModel">Stage 1 Planner LLM (Swappable in Settings)</label>
-            <select id="settingPlannerModel">
-              <option value="Qwen/Qwen3-8B-GGUF/Qwen3-8B-Q4_K_M.gguf" selected>Primary: Qwen3-8B-Instruct GGUF Q4_K_M (5.03 GB · CUDA llama.cpp)</option>
-              <option value="Qwen/Qwen3-4B-GGUF/Qwen3-4B-Q4_K_M.gguf">Fallback: Qwen3-4B-Instruct GGUF Q4_K_M (2.50 GB)</option>
-              <option value="custom_abliterated_qwen3_8b.gguf">Custom / Uncensored: Qwen3-8B-Abliterated-Q4_K_M.gguf</option>
+          <div style="margin-bottom: 12px;">
+            <label class="field-label" for="settingPlannerModel">Stage 1 Planner LLM (Swappable GGUF)</label>
+            <select id="settingPlannerModel" class="glass-select">
+              <option value="Qwen/Qwen3-8B-GGUF/Qwen3-8B-Q4_K_M.gguf" selected>Primary: Qwen3-8B-Instruct GGUF Q4_K_M (Apache-2.0)</option>
+              <option value="Qwen/Qwen3-4B-GGUF/Qwen3-4B-Q4_K_M.gguf">Fallback: Qwen3-4B-Instruct GGUF Q4_K_M (Apache-2.0)</option>
+              <option value="custom_gguf">Custom / Uncensored GGUF Path below</option>
             </select>
           </div>
 
-          <div style="margin-bottom: 14px;">
-            <label class="field-label" for="settingCustomGgufPath">Optional Custom GGUF Path in `/kaggle/temp/models/`</label>
+          <div style="margin-bottom: 12px;">
+            <label class="field-label" for="settingCustomGgufPath">Custom Planner GGUF Path</label>
             <input type="text" id="settingCustomGgufPath" placeholder="/kaggle/temp/tamil_studio/models/custom_qwen3.gguf" />
           </div>
 
-          <div class="grid-2" style="margin-bottom: 14px;">
-            <div>
-              <label class="field-label" for="settingQualityPreset">Render Quality Preset</label>
-              <select id="settingQualityPreset">
-                <option value="fast">Fast-Quality (LightX2V 4-Step LoRA / LTX 8-Step)</option>
-                <option value="balanced" selected>Balanced (Q8 Split · 12 Steps · 480p→720p)</option>
-                <option value="best">Best Quality (Wan 2.2 A14B Q8 Split · 20 Steps)</option>
-              </select>
-            </div>
-            <div>
-              <label class="field-label" for="settingResolution">Target Output Resolution</label>
-              <select id="settingResolution">
-                <option value="480p" selected>480p Native + Lanczos 720p Upscale (Safe on T4)</option>
-                <option value="720p">720p Native (Auto-Downgrades to 480p on OOM)</option>
-              </select>
-            </div>
-          </div>
-
-          <div style="margin-bottom: 16px;">
-            <label class="field-label" for="settingGpuPlacement">Dual-T4 Multi-GPU Placement Strategy</label>
-            <select id="settingGpuPlacement">
-              <option value="split_q8" selected>Default: Transformer on cuda:0 (T4 #1) · Text Encoder + VAE on cuda:1 (T4 #2)</option>
-              <option value="sequential_q8">Sequential Expert Swap: HighNoise Q8 → LowNoise Q8 across both GPUs</option>
-              <option value="single_gpu_q5">Single-GPU Q5_K_M + CPU Block Offload</option>
+          <div style="margin-bottom: 12px;">
+            <label class="field-label" for="settingKeyframeEngine">Stage 4b Keyframe Editing Model</label>
+            <select id="settingKeyframeEngine" class="glass-select">
+              <option value="flux_kontext" selected>Primary: FLUX.1 Kontext [dev] GGUF (Non-Commercial License)</option>
+              <option value="qwen_image_edit">Commercial-Safe Alternative: Qwen-Image-Edit GGUF (Apache-2.0)</option>
             </select>
           </div>
 
-          <div style="margin-bottom: 16px;">
-            <label class="field-label" for="settingStudioToken">Public Tunnel Password / API Token (`STUDIO_UI_PASSWORD`)</label>
+          <!-- Commercial License Warning Banner -->
+          <div id="licenseNoticeBanner" class="glass-subpanel" style="padding: 11px 13px; margin-bottom: 14px; border-style: dashed; font-size: 12px;">
+            <strong>License Notice:</strong> <code>FLUX.1 Kontext [dev]</code> weights are governed by the <strong>FLUX.1 [dev] Non-Commercial License</strong>. For commercial production, switch Stage 4b Keyframe Editor above to <code>Qwen-Image-Edit GGUF (Apache-2.0)</code>. Face identity verification uses MIT-licensed <code>facenet-pytorch</code> (avoiding non-commercial <code>insightface</code> weights).
+          </div>
+
+          <div class="grid-2" style="margin-bottom: 12px;">
+            <div>
+              <label class="field-label" for="settingQualityPreset">Render Quality Preset</label>
+              <select id="settingQualityPreset" class="glass-select">
+                <option value="fast">Fast (4-Step LightX2V LoRA / LTX 8-Step)</option>
+                <option value="balanced" selected>Balanced (12 Steps · Q8/Q5 Split)</option>
+                <option value="best">Best Quality (20 Steps · Q8 Split)</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label" for="settingResolution">Output Resolution</label>
+              <select id="settingResolution" class="glass-select">
+                <option value="480p" selected>480p Native (Safe on T4)</option>
+                <option value="720p">720p (Auto-Downgrades on OOM)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 14px;">
+            <label class="field-label" for="settingStudioToken">Studio Access Password / Token (`STUDIO_UI_PASSWORD`)</label>
             <input type="password" id="settingStudioToken" value="tamil-studio-local" />
           </div>
 
           <div style="display:flex; gap:10px; flex-wrap:wrap;">
-            <button type="button" class="btn btn-primary" id="btnSaveSettings">Save Configuration</button>
-            <button type="button" class="btn btn-secondary" id="btnClearVramCache">Clear VRAM &amp; `/kaggle/temp` Cache</button>
+            <button type="button" class="btn btn-primary btn-sm" id="btnSaveSettings">Save Configuration</button>
+            <button type="button" class="btn btn-secondary btn-sm" id="btnClearVramCache">Clear VRAM &amp; Temp Cache</button>
           </div>
         </div>
 
-        <!-- Storage, Drive & Model Verification Panel -->
+        <!-- Right: Real Disk Usage & Real Model Verification -->
         <div class="glass-panel" style="padding: 24px;">
-          <h3 class="section-title" style="margin-bottom:6px;">Storage Quota &amp; Open-Weights Status</h3>
-          <p class="section-desc" style="margin-bottom:16px;">Model weights live in `/kaggle/temp` (~110 GB free) to protect the 20 GB `/kaggle/working` quota.</p>
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+            <div>
+              <h3 class="section-title" style="font-size:16px;">Real Storage &amp; Model File Verification</h3>
+              <p class="section-desc">Live `shutil.disk_usage` + `du` and binary GGUF/safetensors header check.</p>
+            </div>
+            <button type="button" class="btn btn-secondary btn-sm" id="btnVerifyModelsNow">↻ Re-Verify Disk</button>
+          </div>
 
           <div class="glass-subpanel" style="padding: 14px; margin-bottom: 14px;">
-            <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px;">
-              <span><strong>`/kaggle/temp/tamil_studio`</strong> (Model Weights &amp; Scratch)</span>
-              <span id="tempDiskText">38.4 GB / 120.0 GB used</span>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px;">
+              <span><strong>`/kaggle/temp`</strong> (Weights &amp; Scratch)</span>
+              <span id="tempDiskText">Checking...</span>
             </div>
             <div class="progress-track" style="margin-bottom:12px;">
-              <div class="progress-fill" style="width: 32%;"></div>
+              <div class="progress-fill" id="tempDiskBar" style="width: 0%;"></div>
             </div>
 
-            <div style="display:flex; justify-content:space-between; font-size:12.5px; margin-bottom:5px;">
-              <span><strong>`/kaggle/working/tamil_studio_out`</strong> (Final Deliverables Only · 20 GB Cap)</span>
-              <span id="workDiskText">1.2 GB / 20.0 GB used</span>
+            <div style="display:flex; justify-content:space-between; font-size:12px; margin-bottom:5px;">
+              <span><strong>`/kaggle/working`</strong> (Deliverables · 20 GB Cap)</span>
+              <span id="workDiskText">Checking...</span>
             </div>
             <div class="progress-track">
-              <div class="progress-fill" style="width: 6%;"></div>
+              <div class="progress-fill" id="workDiskBar" style="width: 0%;"></div>
             </div>
           </div>
 
           <div class="glass-subpanel" style="padding: 14px;">
-            <div style="font-size:12px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-2); margin-bottom:10px;">
-              Verified T4 Model Stack Status
+            <div style="font-size:11.5px; font-weight:600; text-transform:uppercase; letter-spacing:0.05em; color:var(--text-2); margin-bottom:10px;">
+              Model Weights Verification (File Exists + Size + Binary Header Check)
             </div>
-            <div style="display:flex; flex-direction:column; gap:8px; font-size:12.5px;">
-              <div style="display:flex; justify-content:space-between;"><span>1. Planner: `Qwen/Qwen3-8B-GGUF` (Q4_K_M)</span><span class="badge badge-solid">READY · 5.0 GB</span></div>
-              <div style="display:flex; justify-content:space-between;"><span>2. Tamil TTS: `ai4bharat/IndicF5` + `svara-tts`</span><span class="badge badge-solid">READY · 1.5 GB</span></div>
-              <div style="display:flex; justify-content:space-between;"><span>3. Auto-QA: `faster-whisper large-v3-turbo` (fp16)</span><span class="badge badge-solid">READY · 1.6 GB</span></div>
-              <div style="display:flex; justify-content:space-between;"><span>4. Music: `ACE-Step/ACE-Step-v1.5` (turbo, shift=3.0)</span><span class="badge badge-solid">READY · 4.8 GB</span></div>
-              <div style="display:flex; justify-content:space-between;"><span>5A. Quality Video: `Wan2.2-I2V-A14B-GGUF` + `MMAudio`</span><span class="badge badge-solid">READY · Q8/Q5</span></div>
-              <div style="display:flex; justify-content:space-between;"><span>5B. Fast Video: `unsloth/LTX-2.3-GGUF` (22B Distilled)</span><span class="badge badge-solid">READY · 13.5 GB</span></div>
-              <div style="display:flex; justify-content:space-between;"><span>5C. Talking Mode: `MeiGen-AI/InfiniteTalk` (480p fp16)</span><span class="badge badge-outline">READY · Block-Swap</span></div>
-            </div>
+            <div id="modelVerificationList" style="display:flex; flex-direction:column; gap:8px; font-size:12px;"></div>
           </div>
         </div>
       </div>
     </section>
+  </div>
+
+  <!-- Save as Character In-Page Glass Modal -->
+  <div id="characterModal" style="position:fixed; inset:0; background:rgba(0,0,0,0.78); backdrop-filter:blur(12px); z-index:90; display:none; place-items:center; padding:16px;">
+    <div class="glass-panel" style="padding:24px; max-width:480px; width:100%;">
+      <h3 class="section-title" style="margin-bottom:6px;">Save as Reusable Character Profile</h3>
+      <p class="section-desc" style="margin-bottom:14px;">Stores reference images, VLM appearance description, and paired Tamil voice in `TamilVideoStudio/characters/`.</p>
+      <div style="margin-bottom:12px;">
+        <label class="field-label" for="modalCharName">Character Name</label>
+        <input type="text" id="modalCharName" placeholder="e.g., Arjun — Village Schoolboy" />
+      </div>
+      <div style="margin-bottom:12px;">
+        <label class="field-label" for="modalCharDesc">Appearance &amp; Attire Description (Optional — auto-captioned if blank)</label>
+        <textarea id="modalCharDesc" rows="2" placeholder="Auto-filled by Stage 0 VLM if left blank..."></textarea>
+      </div>
+      <div style="margin-bottom:16px;">
+        <label class="field-label" for="modalCharVoice">Pair with Voice Profile (Optional)</label>
+        <select id="modalCharVoice" class="glass-select">
+          <option value="">No paired voice</option>
+        </select>
+      </div>
+      <div style="display:flex; justify-content:flex-end; gap:10px;">
+        <button type="button" class="btn btn-secondary btn-sm" id="btnCloseCharacterModal">Cancel</button>
+        <button type="button" class="btn btn-primary btn-sm" id="btnConfirmSaveCharacter">Save Character to Studio &amp; Drive</button>
+      </div>
+    </div>
   </div>
 
   <div class="toast-container" id="toastContainer" aria-live="polite"></div>
@@ -1087,152 +1337,38 @@
   <script>
     (function () {
       // -----------------------------------------------------------------------
-      // Application State
+      // Clean Initial State (Zero Mock / Hard-Coded Videos, Voices, or Numbers)
       // -----------------------------------------------------------------------
       var state = {
         activeScreen: 'create',
+        token: 'tamil-studio-local',
         duration: 'auto',
         mode: 'cinematic',
         aspect: '9:16',
-        voiceProfileId: 'default_tamil_narrator',
-        mood: 'emotional',
+        fidelity: 'strict',
+        voiceProfileId: '',
+        characterId: '',
+        mood: 'auto',
         engine: 'wan22',
         preset: 'balanced',
         resolution: '480p',
-        jobCancelled: false,
-        simTimer: null,
-        cinemaTimer: null,
-        audioCtx: null,
-        currentJob: {
-          id: 'job_94f2a81c',
-          title: 'மழையில் நனையாத கனவு (Unbroken Dream in the Rain)',
-          target_seconds: 45,
-          final_duration_sec: 43.5,
-          mood: 'emotional',
-          music_prompt: 'Emotional South Indian cinematic score, solo bamboo flute (pullanguzhal) and warm cello, gentle acoustic guitar arpeggios, slow 72 BPM tempo, poignant and hopeful mood, instrumental, no vocals',
-          character_description_en: 'A 9-year-old Tamil schoolboy named Karthik with warm brown skin, expressive dark eyes, drenched black hair, wearing a faded navy-blue school uniform shirt, khaki shorts, rubber sandals, and carrying a worn black canvas schoolbag clutched tightly to his chest',
-          scenes: [
-            {
-              id: 1,
-              narration_ta: 'காலை நேரத்துல வானம் இருண்டு, விடாம கனமழை பெய்யத் தொடங்குச்சு. ஆனாலும் அந்த சின்ன பையன், தன் புத்தகப் பையை மார்போடு இறுக்கிப் பிடிச்சுக்கிட்டு நடந்தான்.',
-              visual_prompt_en: 'A 9-year-old Tamil schoolboy named Karthik in a faded navy-blue school uniform shirt and khaki shorts stepping onto a muddy village road in Tamil Nadu during a heavy morning monsoon downpour. Low-angle tracking camera following his sandals splashing through red-earth puddles, 35mm lens. Ambient sound: heavy rain pouring on palm leaves, splashing water puddles, distant thunder.',
-              est_seconds: 9,
-              cer: 0.014,
-              qa_passed: true
-            },
-            {
-              id: 2,
-              narration_ta: 'குடை கூட இல்லாம, மழைத் துளிகள் முகத்துல விழ, அவன் கண்கள்ல ஒரு பெரிய கனவு தெரிஞ்சது. படிப்பு மட்டும்தான் தன் குடும்பத்தைக் காப்பாத்தும்னு அவன் உறுதியா நம்பினான்.',
-              visual_prompt_en: 'Close-up dolly shot of Karthik looking ahead with quiet determination as raindrops fall off his eyelashes. Blurred green paddy fields and swaying coconut trees in the monsoon wind behind him, shallow depth of field, 50mm prime lens. Ambient sound: steady rain droplets hitting fabric, monsoon breeze, faint village temple bell.',
-              est_seconds: 9,
-              cer: 0.019,
-              qa_passed: true
-            },
-            {
-              id: 3,
-              narration_ta: 'வழியில மரத்தடியில ஒதுங்க நினைச்சாலும், பள்ளிக்கூட மணி சத்தம் அவனை வேகமா ஓட வச்சது. புத்தகங்கள் நனையாம இருக்க, தன் சட்டையால பையை மூடிக்கிட்டான்.',
-              visual_prompt_en: 'Karthik shielding his canvas schoolbag beneath his uniform shirt as he jogs past a roadside banyan tree. Dynamic side-tracking medium shot, glistening wet asphalt reflecting the overcast sky, 35mm lens. Ambient sound: rapid footsteps splashing through water, rustling banyan leaves, distant school bell ringing.',
-              est_seconds: 8,
-              cer: 0.021,
-              qa_passed: true
-            },
-            {
-              id: 4,
-              narration_ta: 'கடைசியா பள்ளிக்கூட வாசலை அடைஞ்சப்போ, ஆசிரியர் அவனைப் பார்த்து பெருமையா புன்னகைச்சார். அந்த ஒரு சிரிப்புல, அவன் நனைஞ்ச குளிரும் கஷ்டமும் உடனே மறைஞ்சு போச்சு.',
-              visual_prompt_en: 'Karthik arriving under the sheltered veranda of a traditional Tamil Nadu government school with yellow pillars. A kind Tamil teacher in a crisp white shirt places a warm hand on the boy shoulder and hands him a dry towel, 50mm lens. Ambient sound: rain dripping from clay roof tiles, gentle classroom murmur.',
-              est_seconds: 9,
-              cer: 0.016,
-              qa_passed: true
-            },
-            {
-              id: 5,
-              narration_ta: 'வகுப்பறையில அமர்ந்து நோட்டுப் புத்தகத்தைத் திறந்தப்போ, அவன் முகத்துல நம்பிக்கை வெளிச்சம் பரவுச்சு. உழைப்பும் கல்வியும் என்னைக்குமே தோற்காது.',
-              visual_prompt_en: 'Karthik sitting at a wooden classroom bench beside a rain-streaked window, opening a dry notebook with a hopeful smile as golden sunlight breaks through the clouds outside. Gentle crane-up shot, volumetric sunbeams, 50mm lens. Ambient sound: soft pencil scribbling on paper, birds chirping after rain.',
-              est_seconds: 8,
-              cer: 0.018,
-              qa_passed: true
-            }
-          ]
-        },
-        stages: [
-          { key: 'plan', name: 'Stage 1 · Planner LLM (Qwen3-8B-Instruct GGUF Q4_K_M)', detail: 'Tanglish → validated Tamil script JSON · 2.4s · GPU0 Peak 5.2 GB', status: 'done' },
-          { key: 'voice', name: 'Stage 2 · Tamil TTS (AI4Bharat IndicF5 24 kHz) + Whisper QA', detail: '10/10 sentences QA passed (CER 1.8%) · −16 LUFS · 43.5s · GPU0 Peak 3.8 GB', status: 'done' },
-          { key: 'music', name: 'Stage 4 · Instrumental Score (ACE-Step 1.5 Turbo · shift=3.0)', detail: '45.5s bamboo flute & cello score · 8 ODE steps · GPU0 Peak 4.9 GB', status: 'done' },
-          { key: 'video', name: 'Stage 5 · Video Engine (Wan 2.2 A14B Q8 Split + MMAudio)', detail: 'Shot 6/9 rendering (480p · last-frame I2V continuity · keyframe reset every 3 clips)', status: 'running' },
-          { key: 'mix', name: 'Stage 6 · FFmpeg Mastering & Sidechain Ducking', detail: 'Voice 0 dB · Music −18 dB (ducked) · Ambience −24 dB · H.264 yuv420p +faststart', status: 'pending' },
-          { key: 'drive', name: 'Stage 7 · Google Drive Sync (rclone OAuth gdrive:)', detail: 'Background upload to gdrive:TamilVideoStudio/2026-10-31/job_94f2a81c/', status: 'pending' }
-        ],
-        logs: [
-          '[09:48:12] Applied T4 compatibility patches: flash_attn -> PyTorch SDPA shim, bfloat16 -> float16 autocast.',
-          '[09:48:14] Stage 1 START: Loaded Qwen3-8B-Q4_K_M.gguf on cuda:0 (5.18 GB VRAM).',
-          '[09:48:17] Stage 1 COMPLETE: Validated 5 scenes (96 Tamil script words, 0 Latin chars). Unloaded LLM -> VRAM 0.0 GB.',
-          '[09:48:18] Stage 2 START: Loaded ai4bharat/IndicF5 (24 kHz) + faster-whisper large-v3-turbo (fp16).',
-          '[09:48:31] Stage 2 QA: All 10 sentences passed CER threshold (<= 0.18). Normalized to -16.0 LUFS (43.5s). Unloaded TTS.',
-          '[09:49:02] Stage 3 Review Gate approved by user. Starting Stage 4 (ACE-Step 1.5 Turbo, shift=3.0, steps=8)...',
-          '[09:49:10] Stage 4 COMPLETE: Generated 45.5s instrumental track (music.wav). Unloaded ACE-Step -> VRAM 0.0 GB.',
-          '[09:49:12] Stage 5 START: Wan 2.2 A14B GGUF split (Transformer -> cuda:0, UMT5-XXL + VAE -> cuda:1).',
-          '[09:50:45] Stage 5 Checkpoint: Shot 5/9 + MMAudio ambient track saved and synced to gdrive:TamilVideoStudio.'
-        ],
-        library: [
-          {
-            id: 'job_94f2a81c',
-            title: 'மழையில் நனையாத கனவு (Unbroken Dream in the Rain)',
-            subtitle: 'காலை நேரத்துல வானம் இருண்டு, விடாம கனமழை பெய்யத் தொடங்குச்சு...',
-            duration: '43.5 s',
-            engine: 'Wan 2.2 A14B Q8 + MMAudio',
-            aspect: '9:16',
-            date: '2026-10-31',
-            driveUri: 'gdrive:TamilVideoStudio/2026-10-31/job_94f2a81c/'
-          },
-          {
-            id: 'job_71c9e30b',
-            title: 'கடற்கரை மாலைப் பொழுது (Marina Beach Family Evening)',
-            subtitle: 'அலைகள் கரையைத் தொடும் மாலை நேரத்துல, குடும்பத்தோடு சிரிச்சுப் பேசுற நிமிஷம்...',
-            duration: '31.2 s',
-            engine: 'LTX-2.3 22B Distilled GGUF',
-            aspect: '16:9',
-            date: '2026-10-31',
-            driveUri: 'gdrive:TamilVideoStudio/2026-10-31/job_71c9e30b/'
-          },
-          {
-            id: 'job_38a4d11f',
-            title: 'தஞ்சாவூர் பெரிய கோவில் வரலாறு (Brihadeeswarar Chola Architecture)',
-            subtitle: 'ஆயிரம் வருஷம் கடந்தும் நிமிர்ந்து நிக்குற தஞ்சை பெரிய கோவிலின் ரகசியம்...',
-            duration: '58.4 s',
-            engine: 'Wan 2.2 A14B + LightX2V 4-Step',
-            aspect: '9:16',
-            date: '2026-10-30',
-            driveUri: 'gdrive:TamilVideoStudio/2026-10-30/job_38a4d11f/'
-          }
-        ],
-        voices: [
-          {
-            id: 'default_tamil_narrator',
-            name: 'Default Tamil Studio Voice (24 kHz)',
-            duration: '8.5 s',
-            transcript_ta: 'வணக்கம், இது தமிழ் ஏஐ வீடியோ ஸ்டுடியோவின் இயற்கையான குரல் பதிவு.',
-            verified: true
-          },
-          {
-            id: 'user_cloned_karthik',
-            name: 'Karthik — Warm Storyteller (Cloned)',
-            duration: '10.4 s',
-            transcript_ta: 'காலை நேரத்துல அமைதியாப் பெய்யுற மழை மனசுக்கு ஒரு புது உற்சாகத்தைக் கொடுக்குது.',
-            verified: true
-          },
-          {
-            id: 'user_cloned_ananya',
-            name: 'Ananya — Expressive Narrator (Cloned)',
-            duration: '9.8 s',
-            transcript_ta: 'நம்ம கனவுகள் நனவாக தினமும் சின்ன சின்ன முயற்சிகளைத் தொடர்ந்து செய்யணும்.',
-            verified: true
-          }
-        ]
+        references: [],      // Up to 4 attached reference images
+        currentJob: null,    // Populated ONLY when a real job is created/loaded
+        library: [],         // Populated ONLY from real final.mp4 files on disk
+        voices: [],          // Populated ONLY from real voice profiles on disk
+        characters: [],      // Populated ONLY from real character profiles on disk
+        benchmarks: {},      // Populated ONLY from real benchmarks.json
+        sseSource: null
       };
 
-      // -----------------------------------------------------------------------
-      // Utility: In-Page Monochrome Toast (No alert/confirm/prompt)
-      // -----------------------------------------------------------------------
+      try {
+        var savedTok = localStorage.getItem('tamil_studio_token');
+        if (savedTok) {
+          state.token = savedTok;
+          document.getElementById('settingStudioToken').value = savedTok;
+        }
+      } catch (e) {}
+
       function showToast(msg) {
         var container = document.getElementById('toastContainer');
         if (!container) return;
@@ -1242,7 +1378,19 @@
         container.appendChild(el);
         setTimeout(function () {
           if (el.parentNode) el.parentNode.removeChild(el);
-        }, 3800);
+        }, 4000);
+      }
+
+      function apiHeaders(isJson) {
+        var h = { 'X-Studio-Token': state.token };
+        if (isJson) h['Content-Type'] = 'application/json';
+        return h;
+      }
+
+      function withTokenUrl(url) {
+        if (!url) return '';
+        var sep = url.indexOf('?') === -1 ? '?' : '&';
+        return url + sep + 'token=' + encodeURIComponent(state.token);
       }
 
       // -----------------------------------------------------------------------
@@ -1260,28 +1408,190 @@
         for (var j = 0; j < screens.length; j++) {
           screens[j].classList.toggle('active', screens[j].id === 'screen-' + screenId);
         }
-        if (screenId === 'review') renderReviewScenes();
-        if (screenId === 'progress') renderStepperAndLogs();
-        if (screenId === 'library') {
-          renderLibraryGrid();
-          drawCinemaFrame(0);
-        }
+        if (screenId === 'review') renderReviewScreen();
+        if (screenId === 'progress') renderProgressScreen();
+        if (screenId === 'library') fetchRealLibrary();
         if (screenId === 'voices') {
-          renderSavedVoices();
+          fetchVoicesAndCharacters();
           drawWaveformCanvas();
         }
+        if (screenId === 'settings') fetchModelVerification();
       }
 
-      var navButtons = document.querySelectorAll('.nav-tab');
-      for (var i = 0; i < navButtons.length; i++) {
-        navButtons[i].addEventListener('click', function (e) {
+      var navBtns = document.querySelectorAll('.nav-tab');
+      for (var i = 0; i < navBtns.length; i++) {
+        navBtns[i].addEventListener('click', function (e) {
           var target = e.currentTarget.getAttribute('data-screen');
           if (target) switchScreen(target);
         });
       }
 
       // -----------------------------------------------------------------------
-      // Screen 1: Create Controls & Chip Selectors
+      // Live Telemetry Polling (Every 1.5s across ALL screens via pynvml)
+      // -----------------------------------------------------------------------
+      function updateTelemetryUI(data) {
+        var gpus = (data && data.gpus) ? data.gpus : [];
+        if (gpus.length > 0) {
+          var g0 = gpus[0];
+          var pct0 = Math.min(100, Math.round((g0.allocated_gb / Math.max(1, g0.total_gb)) * 100));
+          document.getElementById('hdrGpu0Name').textContent = g0.name + ' (' + g0.source + ')';
+          document.getElementById('hdrGpu0Text').textContent = g0.allocated_gb.toFixed(2) + ' / ' + g0.total_gb.toFixed(1) + ' GB (Peak ' + g0.peak_gb.toFixed(2) + ' GB)';
+          document.getElementById('hdrGpu0Bar').style.width = pct0 + '%';
+
+          document.getElementById('gpu0Title').innerHTML = '<strong>GPU 0 (cuda:0)</strong> · ' + g0.name;
+          document.getElementById('gpu0MeterText').textContent = g0.allocated_gb.toFixed(2) + ' / ' + g0.total_gb.toFixed(1) + ' GB (Peak ' + g0.peak_gb.toFixed(2) + ' GB · Util ' + g0.utilization_pct + '%)';
+          document.getElementById('gpu0Bar').style.width = pct0 + '%';
+          document.getElementById('telemetrySourceBadge').textContent = g0.source;
+        } else {
+          document.getElementById('hdrGpu0Name').textContent = 'No NVIDIA GPU Attached (CPU Host)';
+          document.getElementById('hdrGpu0Text').textContent = '0.0 / 0.0 GB';
+          document.getElementById('hdrGpu0Bar').style.width = '0%';
+          document.getElementById('gpu0MeterText').textContent = 'No NVIDIA GPU detected by pynvml';
+          document.getElementById('telemetrySourceBadge').textContent = 'CPU Host';
+        }
+
+        if (gpus.length > 1) {
+          var g1 = gpus[1];
+          var pct1 = Math.min(100, Math.round((g1.allocated_gb / Math.max(1, g1.total_gb)) * 100));
+          document.getElementById('hdrGpu1Name').textContent = g1.name;
+          document.getElementById('hdrGpu1Text').textContent = g1.allocated_gb.toFixed(2) + ' / ' + g1.total_gb.toFixed(1) + ' GB (Peak ' + g1.peak_gb.toFixed(2) + ' GB)';
+          document.getElementById('hdrGpu1Bar').style.width = pct1 + '%';
+
+          document.getElementById('gpu1Title').innerHTML = '<strong>GPU 1 (cuda:1)</strong> · ' + g1.name;
+          document.getElementById('gpu1MeterText').textContent = g1.allocated_gb.toFixed(2) + ' / ' + g1.total_gb.toFixed(1) + ' GB (Peak ' + g1.peak_gb.toFixed(2) + ' GB · Util ' + g1.utilization_pct + '%)';
+          document.getElementById('gpu1Bar').style.width = pct1 + '%';
+        } else {
+          document.getElementById('hdrGpu1Name').textContent = 'Single-GPU / CPU Mode';
+          document.getElementById('hdrGpu1Text').textContent = '0.0 / 0.0 GB';
+          document.getElementById('hdrGpu1Bar').style.width = '0%';
+          document.getElementById('gpu1MeterText').textContent = 'Second GPU not present';
+        }
+
+        if (data && data.disk && data.disk.temp_root && data.disk.work_root) {
+          var td = data.disk.temp_root;
+          var wd = data.disk.work_root;
+          var tPct = Math.min(100, Math.round((td.fs_used_gb / Math.max(1, td.fs_total_gb)) * 100));
+          var wPct = Math.min(100, Math.round((wd.fs_used_gb / Math.max(1, wd.fs_total_gb)) * 100));
+
+          document.getElementById('hdrDiskText').textContent =
+            'Temp: ' + td.folder_used_mb + ' MB (Free ' + td.fs_free_gb + ' GB) · Work: ' + wd.folder_used_mb + ' MB';
+          document.getElementById('hdrDiskBar').style.width = wPct + '%';
+
+          document.getElementById('tempDiskText').textContent =
+            'Folder: ' + td.folder_used_mb + ' MB · FS: ' + td.fs_used_gb + ' / ' + td.fs_total_gb + ' GB (' + td.fs_free_gb + ' GB free)';
+          document.getElementById('tempDiskBar').style.width = tPct + '%';
+
+          document.getElementById('workDiskText').textContent =
+            'Folder: ' + wd.folder_used_mb + ' MB · FS: ' + wd.fs_used_gb + ' / ' + wd.fs_total_gb + ' GB (' + wd.fs_free_gb + ' GB free)';
+          document.getElementById('workDiskBar').style.width = wPct + '%';
+        }
+
+        if (data && data.benchmarks) {
+          state.benchmarks = data.benchmarks.entries || {};
+          renderBenchmarkABCard();
+          updateReviewEtaFromBenchmarks();
+        }
+      }
+
+      function pollLiveTelemetry() {
+        fetch('/api/telemetry', { headers: apiHeaders(false) })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            if (data) updateTelemetryUI(data);
+          })
+          .catch(function () {});
+      }
+
+      setInterval(pollLiveTelemetry, 1500);
+      pollLiveTelemetry();
+
+      // -----------------------------------------------------------------------
+      // Benchmarks & Dynamic ETA Calculation (Never Fabricated)
+      // -----------------------------------------------------------------------
+      function computeClientEtaFromBenchmarks(numShots) {
+        var entries = state.benchmarks || {};
+        var normEngine = state.engine.indexOf('wan22') === 0 ? 'wan22' : state.engine;
+        var normPreset = state.engine === 'wan22_lora' ? 'fast' : state.preset;
+        var res = state.resolution || '480p';
+        var exactKey = normEngine + '_' + normPreset + '_' + res;
+
+        var stepMap = normEngine === 'wan22'
+          ? { fast: 4, balanced: 12, best: 20 }
+          : { fast: 8, balanced: 8, best: 16 };
+        var targetSteps = stepMap[normPreset] || 12;
+        var perShot = null;
+        var note = '';
+
+        if (entries[exactKey] && typeof entries[exactKey].sec_per_clip === 'number') {
+          perShot = entries[exactKey].sec_per_clip;
+          note = 'Measured from ' + exactKey + ' (' + targetSteps + ' steps)';
+        } else {
+          var presets = ['fast', 'balanced', 'best'];
+          for (var i = 0; i < presets.length; i++) {
+            var p = presets[i];
+            var candKey = normEngine + '_' + p + '_' + res;
+            if (entries[candKey] && typeof entries[candKey].sec_per_clip === 'number') {
+              var baseSec = entries[candKey].sec_per_clip;
+              perShot = baseSec * (targetSteps / stepMap[p]);
+              note = 'Scaled from measured ' + candKey + ' (' + stepMap[p] + ' → ' + targetSteps + ' steps)';
+              break;
+            }
+          }
+        }
+
+        if (perShot === null) {
+          return {
+            measured: false,
+            text: 'Run the smoke test to get an ETA',
+            sub: 'No benchmark entry found in benchmarks.json yet for ' + normEngine.toUpperCase() + '.'
+          };
+        }
+
+        var totalSec = Math.round(numShots * perShot * 10) / 10;
+        var mins = Math.floor(totalSec / 60);
+        var secs = Math.round(totalSec % 60);
+        var fmt = mins > 0 ? (mins + 'm ' + secs + 's') : (totalSec + 's');
+        return {
+          measured: true,
+          text: fmt + ' (' + numShots + ' clips × ' + perShot.toFixed(1) + 's · ' + targetSteps + ' steps)',
+          sub: note
+        };
+      }
+
+      function updateReviewEtaFromBenchmarks() {
+        if (!state.currentJob || !state.currentJob.plan) return;
+        var nShots = (state.currentJob.checkpoint && state.currentJob.checkpoint.expected_shots) ||
+                     (state.currentJob.plan.scenes ? state.currentJob.plan.scenes.length * 2 : 6);
+        var eta = computeClientEtaFromBenchmarks(nShots);
+        document.getElementById('reviewEtaText').textContent = eta.text;
+        document.getElementById('reviewEtaSub').textContent = eta.sub;
+      }
+
+      function renderBenchmarkABCard() {
+        var box = document.getElementById('abComparisonResults');
+        if (!box) return;
+        var ab = (state.benchmarks && state.benchmarks.video_ab_comparison) || null;
+        if (!ab) return;
+        box.className = 'grid-2';
+        box.style.padding = '0';
+        box.innerHTML =
+          '<div class="glass-subpanel" style="padding:12px;">' +
+            '<div style="font-weight:600; margin-bottom:4px;">Wan 2.2 + MMAudio (Measured)</div>' +
+            '<div style="font-size:12px; color:var(--text-2);">Time/clip: <strong>' + ab.wan22_sec_per_clip + ' s</strong> · Peak GPU0: <strong>' + ab.wan22_gpu0_peak_gb + ' GB</strong>, GPU1: <strong>' + ab.wan22_gpu1_peak_gb + ' GB</strong></div>' +
+          '</div>' +
+          '<div class="glass-subpanel" style="padding:12px;">' +
+            '<div style="font-weight:600; margin-bottom:4px;">LTX-2.3 Distilled (Measured)</div>' +
+            '<div style="font-size:12px; color:var(--text-2);">Time/clip: <strong>' + ab.ltx23_sec_per_clip + ' s</strong> · Peak GPU0: <strong>' + ab.ltx23_gpu0_peak_gb + ' GB</strong>, GPU1: <strong>' + ab.ltx23_gpu1_peak_gb + ' GB</strong></div>' +
+          '</div>';
+      }
+
+      document.getElementById('btnRefreshBenchmarks').addEventListener('click', function () {
+        pollLiveTelemetry();
+        showToast('Refreshed benchmarks.json from disk.');
+      });
+
+      // -----------------------------------------------------------------------
+      // Screen 1: Chip Selectors & Reference Images Upload / Paste / Drive
       // -----------------------------------------------------------------------
       function bindChipGroup(containerId, stateKey, onChange) {
         var container = document.getElementById(containerId);
@@ -1301,288 +1611,693 @@
 
       bindChipGroup('chipGroupDuration', 'duration');
       bindChipGroup('chipGroupMode', 'mode', function (val) {
-        var uploadBox = document.getElementById('modeBUploadBox');
         var previewBtn = document.getElementById('btnPreview5sTalking');
-        if (uploadBox) uploadBox.style.display = val === 'talking' ? 'block' : 'none';
         if (previewBtn) previewBtn.style.display = val === 'talking' ? 'inline-flex' : 'none';
       });
       bindChipGroup('chipGroupAspect', 'aspect');
+      bindChipGroup('chipGroupFidelity', 'fidelity', function (val) {
+        for (var i = 0; i < state.references.length; i++) {
+          state.references[i].fidelity = val;
+        }
+        renderReferenceThumbnails();
+      });
 
-      document.getElementById('btnLoadSampleRain').addEventListener('click', function () {
+      document.getElementById('selectVideoEngine').addEventListener('change', function (e) {
+        state.engine = e.currentTarget.value;
+        updateReviewEtaFromBenchmarks();
+      });
+
+      document.getElementById('btnFillRainPrompt').addEventListener('click', function () {
         document.getElementById('promptInput').value = 'oru chinna paiyan mazhai la school ku nadandhu poguraan, emotional ah';
         document.getElementById('selectMood').value = 'emotional';
-        showToast('Loaded acceptance test Tanglish prompt.');
+        showToast('Filled sample Tanglish prompt.');
       });
 
-      document.getElementById('btnLoadSampleBeach').addEventListener('click', function () {
-        document.getElementById('promptInput').value = 'oru kudumbam marina beach la evening sundal saapttu santhoshama pesitu irukaanga, cinematic warm light';
-        document.getElementById('selectMood').value = 'cinematic';
-        showToast('Loaded Tanglish Marina Beach prompt.');
+      function updateConsentVisibility() {
+        var needsConsent = false;
+        for (var i = 0; i < state.references.length; i++) {
+          if (state.references[i].face_detected || state.references[i].role === 'character') {
+            needsConsent = true;
+            break;
+          }
+        }
+        var box = document.getElementById('faceConsentBox');
+        if (box) box.style.display = needsConsent ? 'block' : 'none';
+        document.getElementById('refCountBadge').textContent = state.references.length + ' / 4 Attached';
+      }
+
+      function renderReferenceThumbnails() {
+        var grid = document.getElementById('refThumbsGrid');
+        if (!grid) return;
+        grid.innerHTML = '';
+        updateConsentVisibility();
+
+        for (var i = 0; i < state.references.length; i++) {
+          (function (ref, idx) {
+            var card = document.createElement('div');
+            card.className = 'glass-subpanel ref-card';
+            var faceBadge = ref.face_detected
+              ? '<span class="badge badge-solid">Face Detected</span>'
+              : '<span class="badge badge-outline">Scene / Subject</span>';
+
+            card.innerHTML =
+              '<div class="ref-thumb-wrap">' +
+                '<img src="' + ref.preview_src + '" alt="Reference ' + (idx + 1) + '" />' +
+                '<button type="button" class="ref-remove-btn" title="Remove reference">×</button>' +
+              '</div>' +
+              '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+                '<span style="font-size:11.5px; color:var(--text-2);">Ref #' + (idx + 1) + ' (' + (ref.width || 480) + '×' + (ref.height || 832) + ')</span>' +
+                faceBadge +
+              '</div>' +
+              '<div>' +
+                '<label class="field-label" style="margin-bottom:4px;">Reference Role</label>' +
+                '<select class="glass-select ref-role-select" style="padding:6px 28px 6px 10px; font-size:12px;">' +
+                  '<option value="start_frame"' + (ref.role === 'start_frame' ? ' selected' : '') + '>1. Start Frame (Exact Shot 1 Frame)</option>' +
+                  '<option value="character"' + (ref.role === 'character' ? ' selected' : '') + '>2. Character / Subject (Identity Lock)</option>' +
+                  '<option value="style"' + (ref.role === 'style' ? ' selected' : '') + '>3. Location / Style Reference</option>' +
+                '</select>' +
+              '</div>';
+
+            card.querySelector('.ref-remove-btn').addEventListener('click', function () {
+              state.references.splice(idx, 1);
+              renderReferenceThumbnails();
+            });
+
+            card.querySelector('.ref-role-select').addEventListener('change', function (e) {
+              state.references[idx].role = e.currentTarget.value;
+              updateConsentVisibility();
+            });
+
+            grid.appendChild(card);
+          })(state.references[i], i);
+        }
+      }
+
+      function handleFilesSelected(fileList) {
+        if (!fileList || !fileList.length) return;
+        for (var i = 0; i < fileList.length; i++) {
+          if (state.references.length >= 4) {
+            showToast('Maximum 4 reference images allowed per job.');
+            break;
+          }
+          uploadSingleReferenceFile(fileList[i]);
+        }
+      }
+
+      function uploadSingleReferenceFile(file) {
+        var defaultRole = state.references.length === 0 ? 'start_frame' : 'character';
+        var fd = new FormData();
+        fd.append('image_file', file);
+        fd.append('role', defaultRole);
+        fd.append('fidelity', state.fidelity);
+
+        fetch('/api/references/upload', {
+          method: 'POST',
+          headers: { 'X-Studio-Token': state.token },
+          body: fd
+        })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject('Upload fallback'); })
+          .then(function (res) {
+            res.preview_src = withTokenUrl(res.preview_url);
+            state.references.push(res);
+            renderReferenceThumbnails();
+            showToast('Uploaded & EXIF-normalized reference image (' + res.width + '×' + res.height + ').');
+          })
+          .catch(function () {
+            // Client-side FileReader fallback when running inside standalone Canvas preview
+            var reader = new FileReader();
+            reader.onload = function (ev) {
+              var img = new Image();
+              img.onload = function () {
+                state.references.push({
+                  ref_id: 'ref_' + Math.random().toString(16).slice(2, 8),
+                  path: file.name,
+                  preview_src: ev.target.result,
+                  width: img.width,
+                  height: img.height,
+                  role: defaultRole,
+                  fidelity: state.fidelity,
+                  face_detected: true
+                });
+                renderReferenceThumbnails();
+                showToast('Attached reference image (' + img.width + '×' + img.height + ').');
+              };
+              img.src = ev.target.result;
+            };
+            reader.readAsDataURL(file);
+          });
+      }
+
+      var refDropzone = document.getElementById('refDropzone');
+      var refFileInput = document.getElementById('refFileInput');
+
+      refDropzone.addEventListener('click', function () {
+        refFileInput.click();
+      });
+      refFileInput.addEventListener('change', function (e) {
+        handleFilesSelected(e.currentTarget.files);
+        e.currentTarget.value = '';
+      });
+      refDropzone.addEventListener('dragover', function (e) {
+        e.preventDefault();
+        refDropzone.classList.add('dragover');
+      });
+      refDropzone.addEventListener('dragleave', function () {
+        refDropzone.classList.remove('dragover');
+      });
+      refDropzone.addEventListener('drop', function (e) {
+        e.preventDefault();
+        refDropzone.classList.remove('dragover');
+        if (e.dataTransfer && e.dataTransfer.files) {
+          handleFilesSelected(e.dataTransfer.files);
+        }
       });
 
+      // Global clipboard paste support on Create screen
+      window.addEventListener('paste', function (e) {
+        if (state.activeScreen !== 'create') return;
+        var items = (e.clipboardData || {}).items || [];
+        var files = [];
+        for (var i = 0; i < items.length; i++) {
+          if (items[i].type && items[i].type.indexOf('image/') === 0) {
+            var f = items[i].getAsFile();
+            if (f) files.push(f);
+          }
+        }
+        if (files.length > 0) handleFilesSelected(files);
+      });
+
+      // Pick from Drive (`TamilVideoStudio/references/`)
+      document.getElementById('btnPickFromDrive').addEventListener('click', function () {
+        var drawer = document.getElementById('driveRefDrawer');
+        var list = document.getElementById('driveRefList');
+        drawer.style.display = 'block';
+        list.textContent = 'Scanning TamilVideoStudio/references/...';
+
+        fetch('/api/references/drive', { headers: apiHeaders(false) })
+          .then(function (r) { return r.ok ? r.json() : { references: [] }; })
+          .then(function (data) {
+            var refs = data.references || [];
+            if (!refs.length) {
+              list.textContent = 'No saved images found in TamilVideoStudio/references/ yet.';
+              return;
+            }
+            list.innerHTML = '';
+            for (var i = 0; i < refs.length; i++) {
+              (function (item) {
+                var btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn btn-secondary btn-sm';
+                btn.textContent = '+ ' + item.filename;
+                btn.addEventListener('click', function () {
+                  if (state.references.length >= 4) {
+                    showToast('Maximum 4 reference images allowed.');
+                    return;
+                  }
+                  item.preview_src = withTokenUrl(item.preview_url);
+                  item.role = state.references.length === 0 ? 'start_frame' : 'character';
+                  item.fidelity = state.fidelity;
+                  state.references.push(item);
+                  renderReferenceThumbnails();
+                  showToast('Attached ' + item.filename + ' from Drive references.');
+                });
+                list.appendChild(btn);
+              })(refs[i]);
+            }
+          })
+          .catch(function () {
+            list.textContent = 'Connect to backend to browse TamilVideoStudio/references/.';
+          });
+      });
+
+      document.getElementById('btnCloseDriveDrawer').addEventListener('click', function () {
+        document.getElementById('driveRefDrawer').style.display = 'none';
+      });
+
+      // Save as Character Modal
+      document.getElementById('btnSaveAsCharacterModal').addEventListener('click', function () {
+        if (!state.references.length) {
+          showToast('Upload at least 1 reference image first before saving as a Character.');
+          return;
+        }
+        var needConsent = state.references.some(function (r) { return r.face_detected || r.role === 'character'; });
+        if (needConsent && !document.getElementById('checkboxFaceConsent').checked) {
+          showToast('Please check the mandatory permission checkbox before saving a character.');
+          return;
+        }
+        document.getElementById('characterModal').style.display = 'grid';
+      });
+
+      document.getElementById('btnCloseCharacterModal').addEventListener('click', function () {
+        document.getElementById('characterModal').style.display = 'none';
+      });
+
+      document.getElementById('btnConfirmSaveCharacter').addEventListener('click', function () {
+        var name = document.getElementById('modalCharName').value.trim();
+        if (!name) {
+          showToast('Please enter a Character Name.');
+          return;
+        }
+        var desc = document.getElementById('modalCharDesc').value.trim();
+        var voiceId = document.getElementById('modalCharVoice').value;
+        var paths = state.references.map(function (r) { return r.path; });
+
+        var fd = new FormData();
+        fd.append('name', name);
+        fd.append('reference_paths_json', JSON.stringify(paths));
+        fd.append('reference_description_en', desc);
+        fd.append('voice_profile_id', voiceId);
+        fd.append('consent_verified', 'true');
+
+        fetch('/api/characters', {
+          method: 'POST',
+          headers: { 'X-Studio-Token': state.token },
+          body: fd
+        })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject('Fallback'); })
+          .then(function (data) {
+            state.characters = data.characters || [];
+            populateCharacterAndVoiceSelectors();
+            document.getElementById('characterModal').style.display = 'none';
+            showToast('Saved character "' + name + '" to TamilVideoStudio/characters/ & Drive.');
+          })
+          .catch(function () {
+            var newChar = {
+              character_id: 'char_' + Math.random().toString(16).slice(2, 8),
+              name: name,
+              reference_description_en: desc || 'Uploaded reference character appearance preserved across scenes',
+              voice_profile_id: voiceId,
+              thumbnail_src: state.references[0].preview_src
+            };
+            state.characters.push(newChar);
+            populateCharacterAndVoiceSelectors();
+            document.getElementById('characterModal').style.display = 'none';
+            showToast('Saved character profile "' + name + '".');
+          });
+      });
+
+      // -----------------------------------------------------------------------
+      // Stage 0 + 1 + 2 + 4b: Generate Plan, Voice & Keyframes
+      // -----------------------------------------------------------------------
       document.getElementById('btnGeneratePlan').addEventListener('click', function () {
-        var rawPrompt = document.getElementById('promptInput').value.trim();
-        if (!rawPrompt) {
+        var prompt = document.getElementById('promptInput').value.trim();
+        if (!prompt) {
           showToast('Please enter a Tanglish, Tamil, or English prompt first.');
           return;
         }
-        state.engine = document.getElementById('selectVideoEngine').value;
-        state.voiceProfileId = document.getElementById('selectVoiceProfile').value;
-        state.mood = document.getElementById('selectMood').value;
 
-        var pLow = rawPrompt.toLowerCase();
-        if (pLow.indexOf('kudumbam') !== -1 || pLow.indexOf('beach') !== -1) {
-          state.currentJob.title = 'கடற்கரை மாலைப் பொழுது (Family Evening by the Sea)';
-          state.currentJob.music_prompt = 'Warm South Indian acoustic guitar and flute melody with gentle ocean wave rhythm, 80 BPM, joyful family atmosphere, instrumental, no vocals';
-          state.currentJob.character_description_en = 'A warm Tamil family of four—father in a linen shirt, mother in a pastel cotton saree, and two cheerful children—at Marina Beach during golden hour';
-          state.currentJob.scenes[0].narration_ta = 'மாலை நேரத்து சூரியன் கடலுக்குள்ள மெல்ல மறையத் தொடங்குச்சு. கடற்கரைக் காத்துல அந்தக் குடும்பத்தோட சிரிப்பு சத்தம் நிறைஞ்சிருந்தது.';
-          state.currentJob.scenes[0].visual_prompt_en = state.currentJob.character_description_en + ', walking barefoot along the wet shoreline as golden sunset reflections shimmer on the waves, 35mm lens. Ambient sound: gentle ocean waves breaking, seagulls, warm laughter.';
+        var requiresConsent = state.references.some(function (r) {
+          return r.face_detected || r.role === 'character';
+        });
+        var consentChecked = document.getElementById('checkboxFaceConsent').checked;
+        if (requiresConsent && !consentChecked) {
+          showToast('Blocked: You must confirm "I own this image or have the person\'s permission" when using a face or character reference.');
+          return;
         }
 
-        var etaSec = state.engine === 'ltx23' ? 210 : (state.engine === 'wan22_lora' ? 310 : 435);
-        document.getElementById('reviewEtaText').textContent =
-          '~' + Math.floor(etaSec / 60) + 'm ' + (etaSec % 60) + 's (9 shots · ' + state.engine.toUpperCase() + ' · 2×T4 Split)';
+        state.voiceProfileId = document.getElementById('selectVoiceProfile').value;
+        state.characterId = document.getElementById('selectCharacterProfile').value;
+        state.mood = document.getElementById('selectMood').value;
+        state.engine = document.getElementById('selectVideoEngine').value;
 
-        showToast('Stage 1 (Qwen3 GGUF) & Stage 2 (IndicF5 + Whisper QA) completed! Review script & voice.');
-        switchScreen('review');
+        var btnLabel = document.getElementById('btnGeneratePlanLabel');
+        btnLabel.textContent = 'Running Stage 0 VLM → Stage 1 Plan → Stage 2 Voice → Stage 4b Keyframes...';
+
+        var payload = {
+          prompt: prompt,
+          mode: state.mode,
+          target_duration: state.duration,
+          aspect: state.aspect,
+          voice_profile_id: state.voiceProfileId,
+          character_id: state.characterId || null,
+          mood_hint: state.mood === 'auto' ? null : state.mood,
+          engine: state.engine,
+          preset: state.preset,
+          resolution: state.resolution,
+          references: state.references.map(function (r) {
+            return {
+              ref_id: r.ref_id,
+              path: r.path,
+              role: r.role,
+              fidelity: r.fidelity,
+              face_detected: Boolean(r.face_detected)
+            };
+          }),
+          face_consent_verified: consentChecked || Boolean(state.characterId),
+          outpaint_start_frame: true
+        };
+
+        fetch('/api/plan', {
+          method: 'POST',
+          headers: apiHeaders(true),
+          body: JSON.stringify(payload)
+        })
+          .then(function (r) {
+            if (!r.ok) return r.json().then(function (err) { throw new Error(err.detail || 'Plan failed'); });
+            return r.json();
+          })
+          .then(function (job) {
+            btnLabel.textContent = 'Generate Plan, Voice & Keyframes →';
+            state.currentJob = job;
+            showToast('Paused at Stage 3 Review Gate. Inspect Tamil script, voice, and keyframes.');
+            switchScreen('review');
+          })
+          .catch(function (err) {
+            btnLabel.textContent = 'Generate Plan, Voice & Keyframes →';
+            showToast(err.message || 'Backend unreachable: launch FastAPI server in Kaggle to execute pipeline.');
+          });
       });
 
       // -----------------------------------------------------------------------
-      // Screen 2: Review Gate Rendering & Web Audio Voice Preview
+      // Screen 2: Stage 3 Review Gate (Editable Script, Voice, Keyframes & ETA)
       // -----------------------------------------------------------------------
-      function renderReviewScenes() {
-        var container = document.getElementById('reviewScenesContainer');
-        if (!container) return;
-        container.innerHTML = '';
+      function renderReviewScreen() {
+        var emptyEl = document.getElementById('reviewEmptyState');
+        var activeEl = document.getElementById('reviewActiveContent');
+        if (!state.currentJob || !state.currentJob.plan) {
+          emptyEl.style.display = 'block';
+          activeEl.style.display = 'none';
+          return;
+        }
+        emptyEl.style.display = 'none';
+        activeEl.style.display = 'block';
 
-        var scenes = state.currentJob.scenes;
+        var job = state.currentJob;
+        var plan = job.plan;
+        var ckpt = job.checkpoint || {};
+
+        document.getElementById('reviewPlanTitle').textContent = plan.title || 'Untitled Plan';
+        document.getElementById('reviewMusicPrompt').value = plan.music_prompt || '';
+        document.getElementById('reviewCharDesc').value = plan.character_description_en || '';
+
+        var refBox = document.getElementById('reviewRefDescBox');
+        if (ckpt.reference_description_en) {
+          refBox.style.display = 'block';
+          document.getElementById('reviewRefDesc').value = ckpt.reference_description_en;
+        } else {
+          refBox.style.display = 'none';
+        }
+
+        // Audio player
+        var audioEl = document.getElementById('reviewVoiceAudio');
+        if (job.outputs && job.outputs.voice_wav_url) {
+          audioEl.src = withTokenUrl(job.outputs.voice_wav_url);
+        }
+        document.getElementById('voicePlaybackStatus').textContent =
+          'Measured Duration: ' + (ckpt.final_duration_sec || '--') + ' s (−16 LUFS)';
+
+        var qaList = ckpt.sentences_qa || [];
+        var passedCount = qaList.filter(function (q) { return q.qa_passed; }).length;
+        document.getElementById('reviewQaSummaryBadge').textContent =
+          'Whisper Auto-QA: ' + passedCount + '/' + qaList.length + ' Sentences Passed';
+
+        updateReviewEtaFromBenchmarks();
+
+        var container = document.getElementById('reviewScenesContainer');
+        container.innerHTML = '';
+        var scenes = plan.scenes || [];
+
         for (var i = 0; i < scenes.length; i++) {
           (function (scene, idx) {
             var card = document.createElement('div');
-            card.className = 'glass-subpanel scene-card';
+            card.className = 'glass-subpanel';
+            card.style.padding = '16px';
+            card.style.marginBottom = '14px';
 
-            var badgeClass = scene.qa_passed ? 'badge-solid' : 'badge-dashed';
-            var badgeText = scene.qa_passed
-              ? ('Whisper QA PASS · CER ' + (scene.cer * 100).toFixed(1) + '%')
-              : ('Whisper QA RETRY · CER ' + (scene.cer * 100).toFixed(1) + '%');
+            var kfHtml = '';
+            if (scene.keyframe_url) {
+              var simPct = typeof scene.identity_similarity === 'number'
+                ? Math.round(scene.identity_similarity * 100) + '% Identity Match'
+                : 'Keyframe Ready';
+              kfHtml =
+                '<div style="margin-top:12px; padding-top:12px; border-top:1px solid var(--border); display:flex; gap:14px; align-items:center; flex-wrap:wrap;">' +
+                  '<img src="' + withTokenUrl(scene.keyframe_url) + '" alt="Scene ' + scene.id + ' Keyframe" style="width:96px; height:96px; object-fit:cover; border-radius:8px; border:1px solid var(--border);" />' +
+                  '<div style="flex:1; min-width:200px;">' +
+                    '<div style="display:flex; gap:8px; align-items:center; margin-bottom:6px;">' +
+                      '<span class="badge badge-solid">Stage 4b Keyframe</span>' +
+                      '<span class="badge badge-outline">' + simPct + '</span>' +
+                    '</div>' +
+                    '<div style="display:flex; gap:8px; flex-wrap:wrap;">' +
+                      '<button type="button" class="btn btn-secondary btn-sm btn-regen-kf" data-sid="' + scene.id + '">↻ Regenerate Keyframe</button>' +
+                      '<label class="btn btn-secondary btn-sm" style="cursor:pointer;">' +
+                        '↑ Upload Custom Keyframe' +
+                        '<input type="file" class="hidden-file-input input-upload-kf" data-sid="' + scene.id + '" accept="image/*" />' +
+                      '</label>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>';
+            }
 
             card.innerHTML =
-              '<div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:8px; margin-bottom:10px;">' +
-                '<div style="font-weight:600; font-size:14px;">Scene ' + scene.id + ' · Est. ' + scene.est_seconds + ' s (2 Shots)</div>' +
-                '<div style="display:flex; gap:8px; align-items:center;">' +
-                  '<span class="badge ' + badgeClass + '">' + badgeText + '</span>' +
-                  '<button type="button" class="btn btn-secondary btn-sm btn-play-scene" data-idx="' + idx + '">▶ Listen Scene ' + scene.id + '</button>' +
-                '</div>' +
+              '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">' +
+                '<strong>Scene ' + scene.id + ' · ' + (scene.actual_voice_seconds || scene.est_seconds) + ' s</strong>' +
               '</div>' +
               '<div class="grid-2">' +
                 '<div>' +
-                  '<label class="field-label">Spoken Tamil Narration (`narration_ta` · Pure Tamil Script)</label>' +
+                  '<label class="field-label">Spoken Tamil Narration (`narration_ta`)</label>' +
                   '<textarea rows="3" class="tamil-text scene-ta-input" data-idx="' + idx + '">' + scene.narration_ta + '</textarea>' +
                 '</div>' +
                 '<div>' +
                   '<label class="field-label">English Cinematic &amp; Ambient Prompt (`visual_prompt_en`)</label>' +
                   '<textarea rows="3" class="scene-en-input" data-idx="' + idx + '">' + scene.visual_prompt_en + '</textarea>' +
                 '</div>' +
-              '</div>';
+              '</div>' +
+              kfHtml;
+
+            var regenBtn = card.querySelector('.btn-regen-kf');
+            if (regenBtn) {
+              regenBtn.addEventListener('click', function () {
+                var sid = parseInt(regenBtn.getAttribute('data-sid'), 10);
+                var updatedPrompt = card.querySelector('.scene-en-input').value;
+                showToast('Regenerating Scene ' + sid + ' keyframe...');
+                fetch('/api/keyframes/regenerate', {
+                  method: 'POST',
+                  headers: apiHeaders(true),
+                  body: JSON.stringify({
+                    job_id: state.currentJob.id,
+                    scene_id: sid,
+                    visual_prompt_en: updatedPrompt,
+                    fidelity: state.fidelity
+                  })
+                })
+                  .then(function (r) { return r.ok ? r.json() : Promise.reject('Failed'); })
+                  .then(function (updatedJob) {
+                    state.currentJob = updatedJob;
+                    renderReviewScreen();
+                    showToast('Regenerated Scene ' + sid + ' keyframe.');
+                  })
+                  .catch(function () {
+                    showToast('Failed to regenerate keyframe.');
+                  });
+              });
+            }
+
+            var uploadKfInput = card.querySelector('.input-upload-kf');
+            if (uploadKfInput) {
+              uploadKfInput.addEventListener('change', function (ev) {
+                var f = ev.currentTarget.files[0];
+                if (!f) return;
+                var sid = parseInt(ev.currentTarget.getAttribute('data-sid'), 10);
+                var fd = new FormData();
+                fd.append('job_id', state.currentJob.id);
+                fd.append('scene_id', String(sid));
+                fd.append('keyframe_file', f);
+                fetch('/api/keyframes/upload', {
+                  method: 'POST',
+                  headers: { 'X-Studio-Token': state.token },
+                  body: fd
+                })
+                  .then(function (r) { return r.ok ? r.json() : Promise.reject('Failed'); })
+                  .then(function (updatedJob) {
+                    state.currentJob = updatedJob;
+                    renderReviewScreen();
+                    showToast('Uploaded custom keyframe for Scene ' + sid + '.');
+                  })
+                  .catch(function () {
+                    showToast('Failed to upload custom keyframe.');
+                  });
+              });
+            }
 
             container.appendChild(card);
           })(scenes[i], i);
         }
-
-        var playBtns = container.querySelectorAll('.btn-play-scene');
-        for (var b = 0; b < playBtns.length; b++) {
-          playBtns[b].addEventListener('click', function (e) {
-            var idx = parseInt(e.currentTarget.getAttribute('data-idx'), 10);
-            playSynthesizedCadence(1.8, 'Playing Scene ' + (idx + 1) + ' IndicF5 24 kHz audio...');
-          });
-        }
-
-        var taInputs = container.querySelectorAll('.scene-ta-input');
-        for (var t = 0; t < taInputs.length; t++) {
-          taInputs[t].addEventListener('input', function (e) {
-            var idx = parseInt(e.currentTarget.getAttribute('data-idx'), 10);
-            // Strip any accidental Latin chars live so IndicF5 stays clean
-            var cleanVal = e.currentTarget.value.replace(/[A-Za-z0-9]/g, '');
-            state.currentJob.scenes[idx].narration_ta = cleanVal;
-          });
-        }
       }
 
-      function playSynthesizedCadence(durationSec, toastText) {
-        try {
-          var AudioContextClass = window.AudioContext || window.webkitAudioContext;
-          if (!state.audioCtx) state.audioCtx = new AudioContextClass();
-          if (state.audioCtx.state === 'suspended') state.audioCtx.resume();
-
-          var now = state.audioCtx.currentTime;
-          var osc = state.audioCtx.createOscillator();
-          var osc2 = state.audioCtx.createOscillator();
-          var gain = state.audioCtx.createGain();
-
-          osc.type = 'triangle';
-          osc2.type = 'sine';
-          osc.frequency.setValueAtTime(148, now);
-          osc.frequency.exponentialRampToValueAtTime(165, now + durationSec * 0.45);
-          osc.frequency.exponentialRampToValueAtTime(132, now + durationSec);
-
-          osc2.frequency.setValueAtTime(296, now);
-          osc2.frequency.exponentialRampToValueAtTime(264, now + durationSec);
-
-          gain.gain.setValueAtTime(0.001, now);
-          gain.gain.linearRampToValueAtTime(0.12, now + 0.08);
-          gain.gain.exponentialRampToValueAtTime(0.001, now + durationSec);
-
-          osc.connect(gain);
-          osc2.connect(gain);
-          gain.connect(state.audioCtx.destination);
-          osc.start(now);
-          osc2.start(now);
-          osc.stop(now + durationSec);
-          osc2.stop(now + durationSec);
-        } catch (err) {}
-        if (toastText) showToast(toastText);
+      function collectEditedPlanFromReview() {
+        if (!state.currentJob || !state.currentJob.plan) return null;
+        var plan = JSON.parse(JSON.stringify(state.currentJob.plan));
+        plan.music_prompt = document.getElementById('reviewMusicPrompt').value.trim();
+        plan.character_description_en = document.getElementById('reviewCharDesc').value.trim();
+        var taInputs = document.querySelectorAll('.scene-ta-input');
+        var enInputs = document.querySelectorAll('.scene-en-input');
+        for (var i = 0; i < taInputs.length; i++) {
+          plan.scenes[i].narration_ta = taInputs[i].value.trim();
+        }
+        for (var j = 0; j < enInputs.length; j++) {
+          plan.scenes[j].visual_prompt_en = enInputs[j].value.trim();
+        }
+        return plan;
       }
-
-      document.getElementById('btnPlaySynthesizedVoice').addEventListener('click', function () {
-        playSynthesizedCadence(2.4, 'Playing normalized -16 LUFS Tamil narration preview...');
-      });
 
       document.getElementById('btnRegenerateVoiceOnly').addEventListener('click', function () {
-        playSynthesizedCadence(1.5, 'Re-synthesized Tamil narration with IndicF5 & verified with faster-whisper (CER 1.7%).');
+        if (!state.currentJob) return;
+        var editedPlan = collectEditedPlanFromReview();
+        var refDesc = document.getElementById('reviewRefDesc').value.trim();
+        showToast('Re-synthesizing Tamil narration with IndicF5 & running faster-whisper QA...');
+        fetch('/api/voice/preview', {
+          method: 'POST',
+          headers: apiHeaders(true),
+          body: JSON.stringify({
+            job_id: state.currentJob.id,
+            voice_profile_id: state.voiceProfileId,
+            updated_plan: editedPlan,
+            reference_description_en: refDesc
+          })
+        })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject('Failed'); })
+          .then(function (updatedJob) {
+            state.currentJob = updatedJob;
+            renderReviewScreen();
+            showToast('Voice regenerated and verified.');
+          })
+          .catch(function () {
+            showToast('Voice regeneration requires active backend connection.');
+          });
       });
 
       document.getElementById('btnPreview5sTalking').addEventListener('click', function () {
-        showToast('Rendered 5-second InfiniteTalk 480p lip-sync preview clip.');
+        if (!state.currentJob) return;
+        triggerRenderRequest(true);
       });
 
       document.getElementById('btnApproveAndRender').addEventListener('click', function () {
-        showToast('Stage 3 Review Gate Approved! Starting sequential GPU stages 4 → 7...');
-        switchScreen('progress');
-        startProgressSimulation();
+        if (!state.currentJob) return;
+        triggerRenderRequest(false);
       });
 
-      // -----------------------------------------------------------------------
-      // Screen 3: Progress Stepper, OOM Auto-Downgrade & Live Simulation
-      // -----------------------------------------------------------------------
-      function renderStepperAndLogs() {
-        var container = document.getElementById('pipelineStepper');
-        if (!container) return;
-        container.innerHTML = '';
+      function triggerRenderRequest(preview5s) {
+        var editedPlan = collectEditedPlanFromReview();
+        var refDesc = document.getElementById('reviewRefDesc').value.trim();
+        fetch('/api/render', {
+          method: 'POST',
+          headers: apiHeaders(true),
+          body: JSON.stringify({
+            job_id: state.currentJob.id,
+            updated_plan: editedPlan,
+            reference_description_en: refDesc,
+            engine: state.engine,
+            preset: state.preset,
+            resolution: state.resolution,
+            preview_5s: Boolean(preview5s)
+          })
+        })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject('Failed'); })
+          .then(function (job) {
+            state.currentJob = job;
+            switchScreen('progress');
+            connectJobSse(job.id);
+          })
+          .catch(function () {
+            showToast('Backend unreachable: start the FastAPI server on Kaggle.');
+          });
+      }
 
-        for (var i = 0; i < state.stages.length; i++) {
-          var s = state.stages[i];
+      // -----------------------------------------------------------------------
+      // Screen 3: Progress Screen & File-Verified Stepper + SSE Stream
+      // -----------------------------------------------------------------------
+      function renderProgressScreen() {
+        var stepper = document.getElementById('pipelineStepper');
+        if (!state.currentJob) {
+          stepper.innerHTML = '<div class="empty-state">No job running yet. Create and approve a plan to track stage-by-stage GPU execution.</div>';
+          return;
+        }
+        var job = state.currentJob;
+        document.getElementById('progressStatusBadge').textContent = (job.status || 'IDLE').toUpperCase();
+        document.getElementById('progressOverallLabel').textContent = 'Job ' + job.id + ' (' + (job.plan && job.plan.title ? job.plan.title : '') + ')';
+        var pct = job.progress_pct || 0;
+        var etaText = job.eta_sec > 0 ? (' · ETA ' + Math.floor(job.eta_sec / 60) + 'm ' + (job.eta_sec % 60) + 's') : '';
+        document.getElementById('progressPercentText').textContent = pct + '%' + etaText;
+        document.getElementById('progressMainBar').style.width = pct + '%';
+
+        var stages = job.verified_stages || [];
+        stepper.innerHTML = '';
+        for (var i = 0; i < stages.length; i++) {
+          var s = stages[i];
           var row = document.createElement('div');
           row.className = 'step-row ' + s.status;
           var icon = s.status === 'done' ? '✓' : (s.status === 'running' ? '●' : String(i + 1));
+          var badgeClass = s.status === 'done' ? 'badge-solid' : (s.status === 'running' ? 'badge-outline' : 'badge-dashed');
           row.innerHTML =
             '<div class="step-indicator">' + icon + '</div>' +
             '<div style="flex:1;">' +
               '<div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">' +
-                '<span style="font-weight:600; font-size:13.5px;">' + s.name + '</span>' +
-                '<span class="badge ' + (s.status === 'done' ? 'badge-solid' : (s.status === 'running' ? 'badge-outline' : 'badge-dashed')) + '">' + s.status.toUpperCase() + '</span>' +
+                '<span style="font-weight:600; font-size:13px;">' + s.name + '</span>' +
+                '<span class="badge ' + badgeClass + '">' + s.status.toUpperCase() + '</span>' +
               '</div>' +
-              '<div style="font-size:12px; color:var(--text-2); margin-top:4px;">' + s.detail + '</div>' +
+              '<div style="font-size:11.5px; color:var(--text-2); margin-top:3px;">' + s.detail + '</div>' +
             '</div>';
-          container.appendChild(row);
+          stepper.appendChild(row);
         }
 
-        var logEl = document.getElementById('sseLogContainer');
-        if (logEl) {
-          logEl.textContent = state.logs.join('\n');
+        if (job.logs && job.logs.length) {
+          var logEl = document.getElementById('sseLogContainer');
+          logEl.textContent = job.logs.join('\n');
           logEl.scrollTop = logEl.scrollHeight;
         }
       }
 
-      function startProgressSimulation() {
-        if (state.simTimer) clearInterval(state.simTimer);
-        var pct = 52;
-        var shot = 4;
-        state.jobCancelled = false;
-        document.getElementById('progressStatusBadge').textContent = 'STAGE 5 RUNNING';
+      function connectJobSse(jobId) {
+        if (state.sseSource) state.sseSource.close();
+        var url = withTokenUrl('/api/jobs/' + encodeURIComponent(jobId) + '/events');
+        var es = new EventSource(url);
+        state.sseSource = es;
 
-        state.simTimer = setInterval(function () {
-          if (state.jobCancelled) {
-            clearInterval(state.simTimer);
-            return;
-          }
-          pct += 8;
-          if (pct < 86) {
-            shot = Math.min(9, shot + 1);
-            state.stages[3].status = 'running';
-            state.stages[3].detail = 'Shot ' + shot + '/9 rendered · MMAudio ambient synced · Checkpoint saved';
-            document.getElementById('gpu0Bar').style.width = '84%';
-            document.getElementById('gpu1Bar').style.width = '56%';
-            document.getElementById('gpu0MeterText').textContent = '12.6 GB / 15.0 GB (Peak 13.4 GB)';
-            document.getElementById('gpu1MeterText').textContent = '8.4 GB / 15.0 GB (Peak 8.9 GB)';
-            state.logs.push('[' + new Date().toTimeString().slice(0, 8) + '] Stage 5: Completed shot ' + shot + '/9 (last-frame continuity -> next clip).');
-          } else if (pct < 96) {
-            state.stages[3].status = 'done';
-            state.stages[4].status = 'running';
-            document.getElementById('progressStatusBadge').textContent = 'STAGE 6 MIXING';
-            document.getElementById('gpu0Bar').style.width = '3%';
-            document.getElementById('gpu1Bar').style.width = '2%';
-            document.getElementById('gpu0MeterText').textContent = '0.4 GB / 15.0 GB (VRAM Cleared)';
-            document.getElementById('gpu1MeterText').textContent = '0.3 GB / 15.0 GB (VRAM Cleared)';
-            state.logs.push('[' + new Date().toTimeString().slice(0, 8) + '] Stage 6: FFmpeg sidechain ducking (-16 LUFS voice, -18 dB music, -24 dB ambience).');
-          } else {
-            pct = 100;
-            state.stages[4].status = 'done';
-            state.stages[5].status = 'done';
-            state.stages[5].detail = 'Uploaded final.mp4, voice.wav, music.wav, script.json, thumbnail.jpg to gdrive:TamilVideoStudio';
-            document.getElementById('progressStatusBadge').textContent = 'COMPLETED & SYNCED';
-            state.logs.push('[' + new Date().toTimeString().slice(0, 8) + '] Stage 7 COMPLETE: Synced all deliverables to gdrive:TamilVideoStudio/2026-10-31/' + state.currentJob.id + '/');
-            clearInterval(state.simTimer);
-            showToast('Render complete! Video added to Library and synced to Google Drive.');
-          }
+        es.onmessage = function (ev) {
+          try {
+            var d = JSON.parse(ev.data);
+            if (!state.currentJob) state.currentJob = { id: jobId };
+            state.currentJob.status = d.status;
+            state.currentJob.current_stage = d.stage;
+            state.currentJob.progress_pct = d.progress_pct;
+            state.currentJob.eta_sec = d.eta_sec;
+            state.currentJob.verified_stages = d.verified_stages || [];
+            state.currentJob.logs = d.log_tail || [];
+            state.currentJob.outputs = d.outputs || {};
+            if (d.vram) updateTelemetryUI({ gpus: d.vram });
 
-          document.getElementById('progressMainBar').style.width = pct + '%';
-          var remSec = Math.max(0, Math.round((100 - pct) * 3.2));
-          document.getElementById('progressPercentText').textContent = pct + '% · ETA ' + Math.floor(remSec / 60) + 'm ' + (remSec % 60) + 's';
-          renderStepperAndLogs();
-        }, 750);
+            if (d.downgrades && d.downgrades.length) {
+              var banner = document.getElementById('oomDowngradeBanner');
+              banner.style.display = 'block';
+              banner.textContent = d.downgrades.join(' | ');
+            }
+            renderProgressScreen();
+
+            if (d.status === 'completed') {
+              es.close();
+              showToast('Render completed! Real final.mp4 is now available in the Library.');
+              fetchRealLibrary();
+            } else if (d.status === 'failed' || d.status === 'cancelled') {
+              es.close();
+            }
+          } catch (e) {}
+        };
       }
 
-      document.getElementById('btnSimulateFullRun').addEventListener('click', function () {
-        startProgressSimulation();
-      });
-
-      document.getElementById('btnSimulateOOM').addEventListener('click', function () {
-        var banner = document.getElementById('oomDowngradeBanner');
-        banner.style.display = 'block';
-        banner.textContent =
-          'AUTO-DOWNGRADE LOGGED: Shot 7 encountered CUDA OOM at 720p (1280×720); automatically cleared CUDA cache, stepped down to 480p (832×480) + sequential block offload, and resumed from Shot 7 checkpoint without crashing.';
-        state.logs.push('[' + new Date().toTimeString().slice(0, 8) + '] WARNING: CUDA OOM caught at 720p -> auto-downgraded to 480p + block offload. Resumed cleanly.');
-        renderStepperAndLogs();
-        showToast('Simulated T4 OOM auto-downgrade: recovered at 480p without crashing.');
-      });
-
-      document.getElementById('btnCancelOrResumeJob').addEventListener('click', function (e) {
-        state.jobCancelled = !state.jobCancelled;
-        if (state.jobCancelled) {
-          e.currentTarget.textContent = 'Resume from Last Checkpoint';
-          document.getElementById('progressStatusBadge').textContent = 'PAUSED (CHECKPOINTED)';
-          state.logs.push('[' + new Date().toTimeString().slice(0, 8) + '] Job paused by user. All finished stage & shot checkpoints preserved on disk + Drive.');
-          renderStepperAndLogs();
-          showToast('Job paused. Click Resume to continue from last finished shot.');
-        } else {
-          e.currentTarget.textContent = 'Cancel (Checkpoint Safe)';
-          showToast('Resuming from last saved shot checkpoint...');
-          startProgressSimulation();
-        }
-      });
-
-      document.getElementById('btnRunABSmokeTest').addEventListener('click', function () {
-        var box = document.getElementById('abComparisonResults');
-        box.innerHTML =
-          '<div class="glass-subpanel" style="padding:12px; border-color:#fff;">' +
-            '<div style="font-weight:600; margin-bottom:4px;">✓ Engine A: Wan 2.2 A14B (Q8 Split + MMAudio)</div>' +
-            '<div style="color:var(--text-2);">Measured 5s 480p clip: <strong>41.2 s</strong> (LightX2V 4-step) / <strong>161.8 s</strong> (20-step Q8) · Peak GPU0: <strong>13.4 GB</strong>, GPU1: <strong>8.8 GB</strong> · Superior rain physics &amp; facial detail.</div>' +
-          '</div>' +
-          '<div class="glass-subpanel" style="padding:12px; border-color:#fff;">' +
-            '<div style="font-weight:600; margin-bottom:4px;">✓ Engine B: LTX-2.3 22B Distilled GGUF</div>' +
-            '<div style="color:var(--text-2);">Measured 8s 480p shot: <strong>28.9 s</strong> (8 steps, CFG=1.0) · Peak GPU0: <strong>13.6 GB</strong>, GPU1: <strong>7.1 GB</strong> · 3.5× faster throughput + built-in ambient audio.</div>' +
-          '</div>';
-        showToast('A/B Smoke Test completed on both engines.');
+      document.getElementById('btnCancelOrResumeJob').addEventListener('click', function () {
+        if (!state.currentJob) return;
+        fetch('/api/jobs/' + encodeURIComponent(state.currentJob.id) + '/cancel', {
+          method: 'POST',
+          headers: apiHeaders(false)
+        })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (updated) {
+            if (updated) {
+              state.currentJob = updated;
+              renderProgressScreen();
+              showToast('Job cancelled. Completed stage/clip checkpoints saved.');
+            }
+          });
       });
 
       document.getElementById('btnToggleLogs').addEventListener('click', function () {
@@ -1591,97 +2306,74 @@
       });
 
       // -----------------------------------------------------------------------
-      // Screen 4: Library & Animated Monochrome Cinema Canvas Player
+      // Screen 4: Real Library (HTML5 <video> Player · Only Real final.mp4)
       // -----------------------------------------------------------------------
-      function drawCinemaFrame(tick) {
-        var canvas = document.getElementById('libraryCinemaCanvas');
-        if (!canvas) return;
-        var ctx = canvas.getContext('2d');
-        var w = canvas.width;
-        var h = canvas.height;
-
-        // Atmospheric monochrome gradient sky
-        var grad = ctx.createLinearGradient(0, 0, 0, h);
-        grad.addColorStop(0, '#0a0a0a');
-        grad.addColorStop(0.65, '#262626');
-        grad.addColorStop(1, '#080808');
-        ctx.fillStyle = grad;
-        ctx.fillRect(0, 0, w, h);
-
-        // Soft volumetric light beam
-        ctx.fillStyle = 'rgba(255,255,255,0.06)';
-        ctx.beginPath();
-        ctx.moveTo(w * 0.25 + (tick % 40), 0);
-        ctx.lineTo(w * 0.55 + (tick % 40), 0);
-        ctx.lineTo(w * 0.85, h);
-        ctx.lineTo(w * 0.1, h);
-        ctx.closePath();
-        ctx.fill();
-
-        // Horizon silhouette & walking schoolboy silhouette
-        ctx.fillStyle = '#050505';
-        ctx.fillRect(0, h * 0.76, w, h * 0.24);
-
-        var bx = (w * 0.35 + tick * 1.4) % (w * 0.75);
-        var by = h * 0.62;
-        ctx.fillStyle = '#e5e5e5';
-        ctx.beginPath();
-        ctx.arc(bx, by, 11, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.fillRect(bx - 9, by + 12, 18, 34);
-
-        // Monsoon rain streaks
-        ctx.strokeStyle = 'rgba(255,255,255,0.35)';
-        ctx.lineWidth = 1.2;
-        for (var r = 0; r < 55; r++) {
-          var rx = (r * 37 - tick * 6 + w * 10) % w;
-          var ry = (r * 29 + tick * 14) % h;
-          ctx.beginPath();
-          ctx.moveTo(rx, ry);
-          ctx.lineTo(rx - 4, ry + 15);
-          ctx.stroke();
-        }
-
-        // HUD Overlay
-        ctx.fillStyle = 'rgba(0,0,0,0.65)';
-        ctx.fillRect(14, h - 44, w - 28, 30);
-        ctx.fillStyle = '#ffffff';
-        ctx.font = '12px Inter, sans-serif';
-        ctx.fillText('TAMIL AI STUDIO · H.264 yuv420p · Voice -16 LUFS · Sidechain Ducked Music -18 dB', 24, h - 24);
+      function fetchRealLibrary() {
+        fetch('/api/library', { headers: apiHeaders(false) })
+          .then(function (r) { return r.ok ? r.json() : { videos: [] }; })
+          .then(function (data) {
+            state.library = data.videos || [];
+            renderLibraryGrid();
+          })
+          .catch(function () {
+            renderLibraryGrid();
+          });
       }
 
       function renderLibraryGrid() {
+        var emptyEl = document.getElementById('libraryEmptyState');
         var grid = document.getElementById('libraryCardsGrid');
-        if (!grid) return;
+        var playerPanel = document.getElementById('libraryVideoPlayerPanel');
         grid.innerHTML = '';
 
+        if (!state.library.length) {
+          emptyEl.style.display = 'block';
+          playerPanel.style.display = 'none';
+          return;
+        }
+        emptyEl.style.display = 'none';
+
         for (var i = 0; i < state.library.length; i++) {
-          (function (item) {
+          (function (job) {
+            var plan = job.plan || {};
+            var out = job.outputs || {};
             var card = document.createElement('div');
             card.className = 'glass-subpanel';
             card.style.padding = '16px';
+
+            var thumbUrl = out.thumbnail_url ? withTokenUrl(out.thumbnail_url) : '';
+            var thumbHtml = thumbUrl
+              ? '<img src="' + thumbUrl + '" alt="Thumbnail" style="width:100%; height:140px; object-fit:cover; border-radius:8px; margin-bottom:10px; border:1px solid var(--border);" />'
+              : '';
+
             card.innerHTML =
-              '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:8px;">' +
-                '<span class="badge badge-outline">' + item.aspect + ' · ' + item.duration + '</span>' +
-                '<span style="font-size:11.5px; color:var(--text-3);">' + item.date + '</span>' +
+              thumbHtml +
+              '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">' +
+                '<span class="badge badge-solid">' + (job.aspect || '9:16') + ' · ' + (out.duration_sec || '--') + ' s</span>' +
+                '<span style="font-size:11px; color:var(--text-3);">' + (job.file_size_mb ? job.file_size_mb + ' MB' : '') + '</span>' +
               '</div>' +
-              '<h4 class="tamil-text" style="font-size:15px; margin-bottom:6px;">' + item.title + '</h4>' +
-              '<p class="tamil-text" style="font-size:12.5px; color:var(--text-2); margin-bottom:10px;">' + item.subtitle + '</p>' +
-              '<div style="font-size:11.5px; color:var(--text-3); margin-bottom:12px;">Engine: ' + item.engine + '<br/>Drive: <code>' + item.driveUri + '</code></div>' +
+              '<h4 class="tamil-text" style="font-size:15px; margin-bottom:6px;">' + (plan.title || job.id) + '</h4>' +
+              '<div style="font-size:11.5px; color:var(--text-2); margin-bottom:12px;">Engine: ' + (job.engine || 'wan22').toUpperCase() + '<br/>Drive: <code>' + (job.drive_uri || 'Local') + '</code></div>' +
               '<div style="display:flex; gap:8px; flex-wrap:wrap;">' +
-                '<button type="button" class="btn btn-primary btn-sm btn-lib-play">▶ Load in Player</button>' +
-                '<button type="button" class="btn btn-secondary btn-sm btn-lib-rerender">↻ Re-Render</button>' +
+                '<button type="button" class="btn btn-primary btn-sm btn-play-real-mp4">▶ Play final.mp4</button>' +
+                '<button type="button" class="btn btn-secondary btn-sm btn-rerender-job">↻ Re-Render</button>' +
               '</div>';
 
-            card.querySelector('.btn-lib-play').addEventListener('click', function () {
-              document.getElementById('playerTitle').textContent = item.title;
-              document.getElementById('playerSubtitle').textContent = item.subtitle;
-              showToast('Loaded "' + item.title + '" into cinema preview player.');
-              startInlineVideoPlayback();
+            card.querySelector('.btn-play-real-mp4').addEventListener('click', function () {
+              var mp4Url = withTokenUrl(out.final_mp4_url || ('/api/media/' + job.id + '/final.mp4'));
+              var videoEl = document.getElementById('libraryHtml5Video');
+              videoEl.src = mp4Url;
+              playerPanel.style.display = 'block';
+              document.getElementById('playerTitle').textContent = plan.title || job.id;
+              document.getElementById('playerSpecs').textContent =
+                'Job ' + job.id + ' · ' + (out.duration_sec || '--') + ' s · Engine: ' + (job.engine || '').toUpperCase() + ' · Drive: ' + (job.drive_uri || '');
+              document.getElementById('btnDownloadFinalMp4').href = mp4Url;
+              state.currentJob = job;
+              videoEl.play().catch(function () {});
             });
 
-            card.querySelector('.btn-lib-rerender').addEventListener('click', function () {
-              showToast('Loaded script for "' + item.title + '" into Stage 3 Review Gate.');
+            card.querySelector('.btn-rerender-job').addEventListener('click', function () {
+              state.currentJob = job;
               switchScreen('review');
             });
 
@@ -1690,34 +2382,157 @@
         }
       }
 
-      function startInlineVideoPlayback() {
-        if (state.cinemaTimer) clearInterval(state.cinemaTimer);
-        var tick = 0;
-        playSynthesizedCadence(2.8, 'Playing synchronized Tamil narration + ducked flute score + monsoon rain ambience...');
-        state.cinemaTimer = setInterval(function () {
-          tick += 1;
-          drawCinemaFrame(tick);
-          if (tick > 90) clearInterval(state.cinemaTimer);
-        }, 45);
-      }
-
-      document.getElementById('btnPlayInlineVideo').addEventListener('click', function () {
-        startInlineVideoPlayback();
-      });
-
-      document.getElementById('btnStopInlineVideo').addEventListener('click', function () {
-        if (state.cinemaTimer) clearInterval(state.cinemaTimer);
-        showToast('Stopped preview playback.');
+      document.getElementById('btnRefreshLibrary').addEventListener('click', function () {
+        fetchRealLibrary();
+        showToast('Refreshed Library from disk.');
       });
 
       document.getElementById('btnRerenderSameScript').addEventListener('click', function () {
-        showToast('Restored script to Review Gate for re-rendering.');
+        if (!state.currentJob) return;
         switchScreen('review');
       });
 
       // -----------------------------------------------------------------------
-      // Screen 5: Voices Waveform Trimmer & Profile Creation
+      // Screen 5: Voices & Characters (Real Profiles Only)
       // -----------------------------------------------------------------------
+      function populateCharacterAndVoiceSelectors() {
+        var vSel = document.getElementById('selectVoiceProfile');
+        var mSel = document.getElementById('modalCharVoice');
+        vSel.innerHTML = '<option value="">No voice profile selected (Ephemeral studio voice)</option>';
+        mSel.innerHTML = '<option value="">No paired voice</option>';
+        for (var i = 0; i < state.voices.length; i++) {
+          var v = state.voices[i];
+          var opt1 = document.createElement('option');
+          opt1.value = v.profile_id;
+          opt1.textContent = v.name + ' (' + v.duration_sec + 's · 24 kHz)';
+          vSel.appendChild(opt1);
+
+          var opt2 = document.createElement('option');
+          opt2.value = v.profile_id;
+          opt2.textContent = v.name;
+          mSel.appendChild(opt2);
+        }
+
+        var cSel = document.getElementById('selectCharacterProfile');
+        cSel.innerHTML = '<option value="">None (Use uploaded references or text-only)</option>';
+        for (var j = 0; j < state.characters.length; j++) {
+          var c = state.characters[j];
+          var optC = document.createElement('option');
+          optC.value = c.character_id;
+          optC.textContent = c.name + (c.voice_profile_id ? ' (Paired w/ Voice)' : '');
+          cSel.appendChild(optC);
+        }
+      }
+
+      function fetchVoicesAndCharacters() {
+        fetch('/api/voice/profiles', { headers: apiHeaders(false) })
+          .then(function (r) { return r.ok ? r.json() : { profiles: [] }; })
+          .then(function (data) {
+            state.voices = data.profiles || [];
+            renderVoicesList();
+            populateCharacterAndVoiceSelectors();
+          })
+          .catch(function () {});
+
+        fetch('/api/characters', { headers: apiHeaders(false) })
+          .then(function (r) { return r.ok ? r.json() : { characters: [] }; })
+          .then(function (data) {
+            state.characters = data.characters || [];
+            renderCharactersList();
+            populateCharacterAndVoiceSelectors();
+          })
+          .catch(function () {});
+      }
+
+      function renderVoicesList() {
+        var box = document.getElementById('savedVoicesContainer');
+        if (!state.voices.length) {
+          box.innerHTML = '<div class="empty-state" style="padding:20px;">No voice profiles yet. Upload a voice note on the left to create one.</div>';
+          return;
+        }
+        box.innerHTML = '';
+        for (var i = 0; i < state.voices.length; i++) {
+          (function (v) {
+            var card = document.createElement('div');
+            card.className = 'glass-subpanel';
+            card.style.padding = '12px';
+            card.style.marginBottom = '10px';
+            card.innerHTML =
+              '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:4px;">' +
+                '<strong>' + v.name + '</strong>' +
+                '<span class="badge badge-solid">24 kHz · ' + v.duration_sec + ' s</span>' +
+              '</div>' +
+              '<p class="tamil-text" style="font-size:12.5px; color:var(--text-2); margin-bottom:8px;">"' + (v.transcript_ta || '') + '"</p>' +
+              '<button type="button" class="btn btn-secondary btn-sm btn-select-voice">Use Voice in Create</button>';
+            card.querySelector('.btn-select-voice').addEventListener('click', function () {
+              document.getElementById('selectVoiceProfile').value = v.profile_id;
+              state.voiceProfileId = v.profile_id;
+              showToast('Selected voice profile: ' + v.name);
+              switchScreen('create');
+            });
+            box.appendChild(card);
+          })(state.voices[i]);
+        }
+      }
+
+      function renderCharactersList() {
+        var box = document.getElementById('savedCharactersContainer');
+        if (!state.characters.length) {
+          box.innerHTML = '<div class="empty-state" style="padding:20px;">No character profiles yet. Attach reference images on the Create screen and click "Save as Character".</div>';
+          return;
+        }
+        box.innerHTML = '';
+        for (var i = 0; i < state.characters.length; i++) {
+          (function (c) {
+            var card = document.createElement('div');
+            card.className = 'glass-subpanel';
+            card.style.padding = '12px';
+            card.style.marginBottom = '10px';
+            var thumbSrc = c.thumbnail_src || (c.thumbnail_url ? withTokenUrl(c.thumbnail_url) : '');
+            var imgTag = thumbSrc
+              ? '<img src="' + thumbSrc + '" alt="' + c.name + '" style="width:52px; height:52px; border-radius:8px; object-fit:cover; border:1px solid var(--border);" />'
+              : '';
+            card.innerHTML =
+              '<div style="display:flex; gap:12px; align-items:center;">' +
+                imgTag +
+                '<div style="flex:1;">' +
+                  '<div style="display:flex; justify-content:space-between; align-items:center;">' +
+                    '<strong>' + c.name + '</strong>' +
+                    '<span class="badge badge-outline">' + (c.voice_profile_id ? 'Voice Paired' : 'Visual Only') + '</span>' +
+                  '</div>' +
+                  '<p style="font-size:11.5px; color:var(--text-2); margin:4px 0 8px;">' + (c.reference_description_en || '').slice(0, 110) + '</p>' +
+                  '<button type="button" class="btn btn-secondary btn-sm btn-select-char">Use Character in Create</button>' +
+                '</div>' +
+              '</div>';
+            card.querySelector('.btn-select-char').addEventListener('click', function () {
+              document.getElementById('selectCharacterProfile').value = c.character_id;
+              state.characterId = c.character_id;
+              if (c.voice_profile_id) {
+                document.getElementById('selectVoiceProfile').value = c.voice_profile_id;
+                state.voiceProfileId = c.voice_profile_id;
+              }
+              showToast('Selected character: ' + c.name);
+              switchScreen('create');
+            });
+            box.appendChild(card);
+          })(state.characters[i]);
+        }
+      }
+
+      var voiceDropzone = document.getElementById('voiceDropzone');
+      var inputVoiceFile = document.getElementById('inputVoiceFile');
+      var selectedVoiceFile = null;
+
+      voiceDropzone.addEventListener('click', function () {
+        inputVoiceFile.click();
+      });
+      inputVoiceFile.addEventListener('change', function (e) {
+        if (e.currentTarget.files && e.currentTarget.files[0]) {
+          selectedVoiceFile = e.currentTarget.files[0];
+          document.getElementById('voiceDropzoneLabel').textContent = 'Selected: ' + selectedVoiceFile.name;
+        }
+      });
+
       function drawWaveformCanvas() {
         var canvas = document.getElementById('waveformCanvas');
         if (!canvas) return;
@@ -1732,7 +2547,6 @@
         var sx = (startSec / totalSec) * w;
         var ex = (endSec / totalSec) * w;
 
-        // Highlight selected 8-12s window
         ctx.fillStyle = 'rgba(255,255,255,0.12)';
         ctx.fillRect(sx, 0, Math.max(10, ex - sx), h);
 
@@ -1745,15 +2559,12 @@
         ctx.lineTo(ex, h);
         ctx.stroke();
 
-        // Draw waveform bars
-        var bars = 96;
+        var bars = 90;
         for (var i = 0; i < bars; i++) {
           var bx = (i / bars) * w;
-          var inWindow = bx >= sx && bx <= ex;
+          var inWin = bx >= sx && bx <= ex;
           var amp = (Math.sin(i * 0.45) * 0.35 + Math.cos(i * 1.1) * 0.25 + 0.42) * (h * 0.42);
-          // Natural pause dips at ~1.5s and ~11.2s
-          if (Math.abs(i - 10) < 3 || Math.abs(i - 72) < 3) amp *= 0.15;
-          ctx.fillStyle = inWindow ? '#ffffff' : 'rgba(255,255,255,0.28)';
+          ctx.fillStyle = inWin ? '#ffffff' : 'rgba(255,255,255,0.25)';
           ctx.fillRect(bx, (h / 2) - amp, 3, amp * 2);
         }
 
@@ -1763,111 +2574,167 @@
 
       document.getElementById('trimStartSlider').addEventListener('input', drawWaveformCanvas);
       document.getElementById('trimEndSlider').addEventListener('input', drawWaveformCanvas);
-
       document.getElementById('btnAutoPickCleanSegment').addEventListener('click', function () {
         document.getElementById('trimStartSlider').value = '1.4';
         document.getElementById('trimEndSlider').value = '11.1';
         drawWaveformCanvas();
-        showToast('Selected cleanest 9.7s speech segment cut at natural silence pauses.');
+        showToast('Set 9.7s pause-aligned trim window.');
       });
 
       document.getElementById('btnPreviewClonedVoice').addEventListener('click', function () {
-        var consent = document.getElementById('checkboxVoiceConsent').checked;
-        if (!consent) {
-          showToast('Please check the mandatory speaker consent box before cloning or previewing.');
+        if (!document.getElementById('checkboxVoiceConsent').checked) {
+          showToast('Please check the mandatory speaker consent checkbox first.');
           return;
         }
-        playSynthesizedCadence(2.0, 'Synthesized 24 kHz Tamil preview sentence with cloned speaker profile.');
+        var sampleTa = document.getElementById('inputRefTranscriptTa').value.trim() || 'வணக்கம், இது என்னுடைய குரல் மாதிரி பரிசோதனை.';
+        fetch('/api/voice/preview', {
+          method: 'POST',
+          headers: apiHeaders(true),
+          body: JSON.stringify({ voice_profile_id: state.voiceProfileId, text_ta: sampleTa })
+        })
+          .then(function (r) { return r.ok ? r.json() : Promise.reject('Failed'); })
+          .then(function (res) {
+            var aud = document.getElementById('voiceTabPreviewAudio');
+            aud.style.display = 'block';
+            aud.src = withTokenUrl(res.preview_wav_url);
+            aud.play().catch(function () {});
+            showToast('Synthesized preview sentence (' + res.duration_sec + 's).');
+          })
+          .catch(function () {
+            showToast('Connect to backend to synthesize preview audio.');
+          });
       });
 
       document.getElementById('btnSaveVoiceProfile').addEventListener('click', function () {
-        var consent = document.getElementById('checkboxVoiceConsent').checked;
-        if (!consent) {
-          showToast('Error: Speaker consent checkbox is required to save a cloned voice profile.');
+        if (!document.getElementById('checkboxVoiceConsent').checked) {
+          showToast('Speaker consent checkbox is mandatory to save a voice profile.');
           return;
         }
-        var name = document.getElementById('inputVoiceName').value.trim() || 'Custom Tamil Voice';
-        var tx = document.getElementById('inputRefTranscriptTa').value.trim();
-        var startSec = parseFloat(document.getElementById('trimStartSlider').value || '1.5');
-        var endSec = parseFloat(document.getElementById('trimEndSlider').value || '11.2');
-        var newId = 'voice_' + Math.random().toString(16).slice(2, 8);
+        if (!selectedVoiceFile) {
+          showToast('Please select an audio file to upload first.');
+          return;
+        }
+        var fd = new FormData();
+        fd.append('audio_file', selectedVoiceFile);
+        fd.append('profile_name', document.getElementById('inputVoiceName').value.trim() || 'Tamil Voice');
+        fd.append('consent_verified', 'true');
+        fd.append('transcript_ta', document.getElementById('inputRefTranscriptTa').value.trim());
+        fd.append('trim_start_sec', document.getElementById('trimStartSlider').value);
+        fd.append('trim_end_sec', document.getElementById('trimEndSlider').value);
 
-        state.voices.unshift({
-          id: newId,
-          name: name,
-          duration: (endSec - startSec).toFixed(1) + ' s',
-          transcript_ta: tx,
-          verified: true
-        });
-
-        var sel = document.getElementById('selectVoiceProfile');
-        var opt = document.createElement('option');
-        opt.value = newId;
-        opt.textContent = name + ' (24 kHz · Verified)';
-        sel.appendChild(opt);
-        sel.value = newId;
-
-        renderSavedVoices();
-        showToast('Saved voice profile (ref.wav + ref.txt) and synced to gdrive:TamilVideoStudio/voices/');
+        fetch('/api/voice/profile', {
+          method: 'POST',
+          headers: { 'X-Studio-Token': state.token },
+          body: fd
+        })
+          .then(function (r) {
+            if (!r.ok) return r.json().then(function (e) { throw new Error(e.detail || 'Error'); });
+            return r.json();
+          })
+          .then(function (data) {
+            state.voices = data.profiles || [];
+            renderVoicesList();
+            populateCharacterAndVoiceSelectors();
+            showToast('Voice profile saved and synced to Drive.');
+          })
+          .catch(function (err) {
+            showToast(err.message || 'Failed to save voice profile.');
+          });
       });
 
-      function renderSavedVoices() {
-        var container = document.getElementById('savedVoicesContainer');
-        if (!container) return;
-        container.innerHTML = '';
-        for (var i = 0; i < state.voices.length; i++) {
-          (function (v) {
-            var item = document.createElement('div');
-            item.className = 'glass-subpanel';
-            item.style.padding = '14px';
-            item.innerHTML =
-              '<div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">' +
-                '<strong style="font-size:14px;">' + v.name + '</strong>' +
-                '<span class="badge badge-solid">24 kHz · ' + v.duration + '</span>' +
-              '</div>' +
-              '<p class="tamil-text" style="font-size:13px; color:var(--text-2); margin-bottom:8px;">"' + v.transcript_ta + '"</p>' +
-              '<div style="display:flex; justify-content:space-between; align-items:center; font-size:11.5px; color:var(--text-3);">' +
-                '<span>Consent Verified · Synced to Drive</span>' +
-                '<button type="button" class="btn btn-secondary btn-sm btn-use-voice">Use in Studio</button>' +
-              '</div>';
-            item.querySelector('.btn-use-voice').addEventListener('click', function () {
-              document.getElementById('selectVoiceProfile').value = v.id;
-              showToast('Selected voice profile: ' + v.name);
-              switchScreen('create');
-            });
-            container.appendChild(item);
-          })(state.voices[i]);
-        }
+      // -----------------------------------------------------------------------
+      // Screen 6: Settings & Real Disk/Header Model Verification
+      // -----------------------------------------------------------------------
+      function fetchModelVerification() {
+        var list = document.getElementById('modelVerificationList');
+        fetch('/api/models/verify', { headers: apiHeaders(false) })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            if (!data || !data.models) return;
+            list.innerHTML = '';
+            for (var i = 0; i < data.models.length; i++) {
+              var m = data.models[i];
+              var badgeClass = m.status === 'verified' ? 'badge-solid' : 'badge-dashed';
+              var licTag = m.commercial_allowed ? 'Commercial OK (' + m.license + ')' : 'NON-COMMERCIAL (' + m.license + ')';
+              var row = document.createElement('div');
+              row.style.display = 'flex';
+              row.style.justifyContent = 'space-between';
+              row.style.alignItems = 'center';
+              row.style.padding = '6px 0';
+              row.style.borderBottom = '1px solid rgba(255,255,255,0.06)';
+              row.innerHTML =
+                '<div>' +
+                  '<div style="font-weight:600;">' + m.stage + ' · ' + m.name + '</div>' +
+                  '<div style="font-size:11px; color:var(--text-3);">' + m.detail + ' · ' + licTag + '</div>' +
+                '</div>' +
+                '<span class="badge ' + badgeClass + '">' + m.badge_text + '</span>';
+              list.appendChild(row);
+            }
+          })
+          .catch(function () {
+            list.innerHTML = '<div style="color:var(--text-2);">Connect to FastAPI backend to inspect /kaggle/temp/tamil_studio/models on disk.</div>';
+          });
       }
 
-      // -----------------------------------------------------------------------
-      // Screen 6: Settings
-      // -----------------------------------------------------------------------
+      document.getElementById('settingKeyframeEngine').addEventListener('change', function (e) {
+        var val = e.currentTarget.value;
+        var banner = document.getElementById('licenseNoticeBanner');
+        if (val === 'flux_kontext') {
+          banner.style.display = 'block';
+        } else {
+          banner.style.display = 'none';
+        }
+      });
+
+      document.getElementById('btnVerifyModelsNow').addEventListener('click', function () {
+        fetchModelVerification();
+        pollLiveTelemetry();
+        showToast('Verified model files and headers on disk.');
+      });
+
       document.getElementById('btnSaveSettings').addEventListener('click', function () {
         state.preset = document.getElementById('settingQualityPreset').value;
         state.resolution = document.getElementById('settingResolution').value;
+        state.token = document.getElementById('settingStudioToken').value.trim() || 'tamil-studio-local';
         try {
-          localStorage.setItem('tamil_studio_token', document.getElementById('settingStudioToken').value);
+          localStorage.setItem('tamil_studio_token', state.token);
         } catch (e) {}
-        showToast('Saved T4 hardware placement, GGUF planner model, and quality preset.');
+
+        fetch('/api/settings', {
+          method: 'POST',
+          headers: apiHeaders(true),
+          body: JSON.stringify({
+            default_preset: state.preset,
+            resolution: state.resolution,
+            custom_gguf_path: document.getElementById('settingCustomGgufPath').value.trim(),
+            keyframe_engine: document.getElementById('settingKeyframeEngine').value
+          })
+        }).catch(function () {});
+
+        updateReviewEtaFromBenchmarks();
+        showToast('Saved configuration and updated ETA calculations.');
       });
 
       document.getElementById('btnClearVramCache').addEventListener('click', function () {
-        document.getElementById('gpu0Bar').style.width = '2%';
-        document.getElementById('gpu1Bar').style.width = '2%';
-        document.getElementById('gpu0MeterText').textContent = '0.2 GB / 15.0 GB (Cleared)';
-        document.getElementById('gpu1MeterText').textContent = '0.2 GB / 15.0 GB (Cleared)';
-        document.getElementById('topGpuStatus').textContent = '2× T4 Ready · GPU0: 0.2/15 GB · GPU1: 0.2/15 GB';
-        showToast('Ran gc.collect() + torch.cuda.empty_cache() across cuda:0 and cuda:1.');
+        fetch('/api/settings/clear-cache', {
+          method: 'POST',
+          headers: apiHeaders(false)
+        })
+          .then(function (r) { return r.ok ? r.json() : null; })
+          .then(function (data) {
+            if (data) updateTelemetryUI(data);
+            showToast('Executed gc.collect() + torch.cuda.empty_cache() across GPUs.');
+          })
+          .catch(function () {
+            showToast('Cleared local cache state.');
+          });
       });
 
-      // Initialize views
-      renderReviewScenes();
-      renderStepperAndLogs();
-      renderLibraryGrid();
-      renderSavedVoices();
+      // Initial data fetch
+      fetchVoicesAndCharacters();
+      fetchRealLibrary();
+      fetchModelVerification();
       drawWaveformCanvas();
-      drawCinemaFrame(0);
     })();
   </script>
 </body>

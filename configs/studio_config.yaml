@@ -1,5 +1,5 @@
 # ==============================================================================
-# Tamil AI Video Studio — Central Studio Configuration (Kaggle 2×T4)
+# Tamil AI Video Studio v2 — Central Studio Configuration (Kaggle 2×T4)
 # ==============================================================================
 
 environment:
@@ -8,8 +8,10 @@ environment:
   models_dir: "/kaggle/temp/tamil_studio/models"
   checkpoints_dir: "/kaggle/temp/tamil_studio/checkpoints"
   voices_dir: "/kaggle/temp/tamil_studio/voices"
+  characters_dir: "/kaggle/temp/tamil_studio/characters"
+  references_dir: "/kaggle/temp/tamil_studio/references"
+  benchmarks_path: "/kaggle/working/tamil_studio_out/benchmarks.json"
   db_path: "/kaggle/working/tamil_studio_out/studio_jobs.db"
-  # Automatic local fallback when running outside Kaggle
   fallback_root: "./workspace_data"
 
 hardware:
@@ -17,19 +19,62 @@ hardware:
   vram_per_gpu_gb: 15.0
   architecture: "sm_75"  # Turing T4
   dtype: "float16"       # Strictly fp16 (no native bf16/fp8 on T4)
-  attention_backend: "sdpa"  # PyTorch SDPA or xformers (no FlashAttention-2)
+  attention_backend: "sdpa"
   default_placement:
     transformer_device: "cuda:0"
-    aux_device: "cuda:1" # Text encoder + VAE + audio encoders
+    aux_device: "cuda:1"
+
+reference_vlm:
+  # Stage 0: Reference Image VLM Analysis (Qwen2.5-VL-7B GGUF + mmproj or 3B fp16 fallback)
+  primary_repo: "unsloth/Qwen2.5-VL-7B-Instruct-GGUF"
+  primary_file: "Qwen2.5-VL-7B-Instruct-Q4_K_M.gguf"
+  mmproj_file: "mmproj-F16.gguf"
+  fallback_repo: "Qwen/Qwen2.5-VL-3B-Instruct"
+  max_images: 4
+  max_image_edge: 1280
+
+keyframe_edit:
+  # Stage 4b: Identity-Preserving Scene Keyframe Generation
+  primary_engine: "flux_kontext"     # "flux_kontext" (Non-Commercial) | "qwen_image_edit" (Apache-2.0)
+  flux_kontext_repo: "unsloth/FLUX.1-Kontext-dev-GGUF"
+  flux_kontext_file: "flux1-kontext-dev-Q5_K_S.gguf"
+  flux_base_repo: "black-forest-labs/FLUX.1-Kontext-dev"
+  qwen_edit_repo: "unsloth/Qwen-Image-Edit-GGUF"
+  qwen_edit_file: "qwen-image-edit-Q4_K_M.gguf"
+  identity_encoder: "facenet_vggface2" # MIT-licensed (vs insightface buffalo_l which is non-commercial)
+  identity_similarity_threshold: 0.68
+  max_identity_retries: 2
+
+licenses:
+  flux_kontext:
+    name: "FLUX.1 Kontext [dev] GGUF"
+    license: "FLUX.1 [dev] Non-Commercial License"
+    commercial_allowed: false
+    warning: "FLUX.1 Kontext [dev] weights are under a Non-Commercial license. Switch Keyframe Editor to Qwen-Image-Edit (Apache-2.0) for commercial projects."
+  qwen_image_edit:
+    name: "Qwen-Image-Edit GGUF"
+    license: "Apache-2.0"
+    commercial_allowed: true
+    warning: ""
+  facenet_vggface2:
+    name: "facenet-pytorch (MTCNN + InceptionResnetV1)"
+    license: "MIT License"
+    commercial_allowed: true
+    warning: ""
+  insightface:
+    name: "InsightFace (buffalo_l / ArcFace)"
+    license: "Non-Commercial Research Only"
+    commercial_allowed: false
+    warning: "InsightFace pretrained weights (buffalo_l) forbid commercial use without an enterprise license. Studio defaults to MIT-licensed facenet-pytorch."
 
 planner:
   primary_repo: "Qwen/Qwen3-8B-GGUF"
   primary_file: "Qwen3-8B-Q4_K_M.gguf"
   fallback_repo: "Qwen/Qwen3-4B-GGUF"
   fallback_file: "Qwen3-4B-Q4_K_M.gguf"
-  custom_gguf_path: ""   # User-swappable in Settings (e.g. abliterated/uncensored GGUF)
+  custom_gguf_path: ""
   n_ctx: 4096
-  n_gpu_layers: -1       # Full GPU offload on cuda:0 (~5.2 GB VRAM)
+  n_gpu_layers: -1
   tamil_words_per_sec: 2.2
   max_retries: 3
 
@@ -44,27 +89,26 @@ tts:
   ref_segment_max_sec: 12.0
   whisper_model: "deepdml/faster-whisper-large-v3-turbo-ct2"
   whisper_fallback: "medium"
-  whisper_compute_type: "float16"  # Never bf16 on T4
-  cer_threshold: 0.18              # Max Character Error Rate before retry
+  whisper_compute_type: "float16"
+  cer_threshold: 0.18
   max_qa_retries: 2
 
 music:
   repo_id: "ACE-Step/ACE-Step-v1.5"
   config_name: "acestep-v15-turbo"
   lm_model_name: "acestep-5Hz-lm-0.6B"
-  lm_backend: "pt"       # PyTorch fp16 backend (avoid vLLM bf16 issues on T4)
+  lm_backend: "pt"
   inference_steps: 8
-  shift: 3.0             # Mandatory shift=3.0 for ACE-Step 1.5 turbo
+  shift: 3.0
   fade_in_sec: 1.5
   fade_out_sec: 2.0
   tail_pad_sec: 2.0
 
 video:
-  default_engine: "wan22"          # "wan22" (Quality) | "ltx23" (Fast)
-  default_preset: "balanced"       # "fast" | "balanced" | "best"
-  keyframe_reset_interval: 3       # Fresh T2V keyframe every 3-4 clips to prevent drift
+  default_engine: "wan22"
+  default_preset: "balanced"
+  keyframe_reset_interval: 3
   wan22:
-    # Quality engine: Wan 2.2 A14B (High-Noise + Low-Noise MoE experts)
     i2v_gguf_repo: "QuantStack/Wan2.2-I2V-A14B-GGUF"
     t2v_gguf_repo: "QuantStack/Wan2.2-T2V-A14B-GGUF"
     high_noise_file_q8: "Wan2.2-I2V-A14B-HighNoise-Q8_0.gguf"
@@ -79,9 +123,9 @@ video:
     clip_seconds: 5
     fps: 16
     steps_quality: 20
+    steps_balanced: 12
     steps_fast_lora: 4
   ltx23:
-    # Fast engine: LTX-2.3 22B Distilled GGUF with native ambient audio
     gguf_repo: "unsloth/LTX-2.3-GGUF"
     gguf_file: "ltx-2.3-22b-dev-UD-Q3_K_M.gguf"
     diffusers_repo: "diffusers/LTX-2.3-Diffusers"
@@ -95,7 +139,7 @@ video:
     model_name: "large_44k_v2"
     negative_prompt: "speech, vocals, human voice, talking, singing, music, melody"
   talking:
-    primary_engine: "infinitetalk" # MeiGen-AI/InfiniteTalk (Wan-based streaming)
+    primary_engine: "infinitetalk"
     infinitetalk_repo: "MeiGen-AI/InfiniteTalk"
     wan_base_repo: "Wan-AI/Wan2.1-I2V-14B-480P"
     wav2vec_repo: "facebook/wav2vec2-base-960h"
@@ -103,12 +147,12 @@ video:
     resolution: "480p"
     sample_steps_lora: 8
     motion_frame: 9
-    num_persistent_param_in_dit: 0 # Essential for 15 GB T4 VRAM
+    num_persistent_param_in_dit: 0
 
 mix:
-  voice_db: 0.0          # Normalized to -16 LUFS
-  music_db: -18.0        # Base music level before sidechain ducking
-  ambience_db: -24.0     # Ambient sound bed
+  voice_db: 0.0
+  music_db: -18.0
+  ambience_db: -24.0
   crossfade_sec: 0.25
   video_codec: "libx264"
   video_crf: 18

@@ -287,6 +287,7 @@ def _build_rule_based_tanglish_plan(
     target_duration: str = "auto",
     mood_hint: Optional[str] = None,
     word_budget_scale: float = 1.0,
+    reference_description_en: Optional[str] = None,
 ) -> VideoPlan:
     """
     High-fidelity deterministic Tanglish/English story planner used when running in
@@ -308,8 +309,8 @@ def _build_rule_based_tanglish_plan(
 
     if is_rain_school_boy:
         mood = mood_hint or "emotional"
-        char_desc = (
-            "A 9-year-old Tamil schoolboy named Karthik with warm brown skin, expressive dark eyes, "
+        char_desc = reference_description_en.strip() if (reference_description_en and reference_description_en.strip()) else (
+            "A 9-year-old Tamil schoolboy with warm brown skin, expressive dark eyes, "
             "drenched black hair, wearing a faded navy-blue school uniform shirt, khaki shorts, "
             "rubber sandals, and carrying a worn black canvas schoolbag clutched tightly to his chest"
         )
@@ -429,7 +430,7 @@ def _build_rule_based_tanglish_plan(
 
     # General Tanglish / English fallback plan
     mood = mood_hint or ("energetic" if "fast" in p_low or "mass" in p_low else "cinematic")
-    char_desc = (
+    char_desc = reference_description_en.strip() if (reference_description_en and reference_description_en.strip()) else (
         "A relatable young Tamil protagonist in their mid-20s with expressive eyes, natural South Indian features, "
         "wearing a casual cotton earth-toned shirt and wristwatch, consistent appearance across all scenes"
     )
@@ -508,6 +509,7 @@ class QwenPlannerEngine:
         target_duration: str = "auto",
         mood_hint: Optional[str] = None,
         word_budget_scale: float = 1.0,
+        reference_description_en: Optional[str] = None,
     ) -> Dict[str, Any]:
         """
         Run Stage 1 inside `StageVRAMGuard`:
@@ -537,12 +539,14 @@ class QwenPlannerEngine:
                     last_error = ""
                     max_retries = int(self.planner_cfg.get("max_retries", 3))
                     for attempt in range(1, max_retries + 1):
+                        ref_clause = f"Uploaded reference image description (MUST match character_description_en and keep scenes plausible for this subject/setting): {reference_description_en}\n" if reference_description_en else ""
                         user_msg = (
                             f"User prompt: {prompt}\n"
                             f"Video mode: {mode}\n"
                             f"Target duration: {resolved_target} seconds\n"
                             f"Target total Tamil word budget: ~{word_budget} Tamil words\n"
                             f"Mood hint: {mood_hint or 'auto-detect from prompt'}\n"
+                            f"{ref_clause}"
                         )
                         if last_error:
                             user_msg += f"\nPrevious JSON failed validation: {last_error}\nFix the error and output strict JSON only. /no_think"
@@ -583,6 +587,7 @@ class QwenPlannerEngine:
                 target_duration=str(resolved_target),
                 mood_hint=mood_hint,
                 word_budget_scale=word_budget_scale,
+                reference_description_en=reference_description_en,
             )
 
         return {

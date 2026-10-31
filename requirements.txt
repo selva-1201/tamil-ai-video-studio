@@ -1,18 +1,17 @@
 # ==============================================================================
-# Tamil AI Video Studio — Pinned Requirements for Kaggle 2×T4 (Turing sm_75)
-# Hardware Target: 2× NVIDIA Tesla T4 (15 GB VRAM each, CUDA 12.1/12.4, sm_75)
-# Strictly NO FlashAttention-2, NO native bfloat16/fp8 dependencies.
-# Uses fp16, int8, GGUF (Q4_K_M / Q5_K_M / Q8_0), SDPA & xFormers attention.
+# Tamil AI Video Studio v2 — Requirements for Kaggle 2×T4 (Turing sm_75)
+# Uses Kaggle's pre-installed CUDA PyTorch; strictly NO bf16/fp8/FlashAttention-2.
 # ==============================================================================
 
-# --- Core Deep Learning & T4 Attention (CUDA 12.1 compatible with Kaggle) ---
---extra-index-url https://download.pytorch.org/whl/cu121
 # --- Deep Learning & Attention (Compatible with Kaggle Pre-installed PyTorch) ---
 torch>=2.2.0
 torchvision>=0.17.0
 torchaudio>=2.2.0
 
-# --- Hugging Face & Model Offload ---
+# --- Real GPU Telemetry (pynvml) ---
+nvidia-ml-py>=12.535.0
+
+# --- Hugging Face & Multi-GPU / Offload Ecosystem ---
 transformers>=4.48.0
 accelerate>=1.3.0
 diffusers>=0.35.0
@@ -23,8 +22,9 @@ gguf>=0.14.0
 sentencepiece>=0.2.0
 protobuf>=5.29.0
 
-# --- Stage 1: LLM Planner ---
+# --- Stage 0, 1 & 4b: VLM, LLM Planner & Face Identity Check ---
 pydantic>=2.8.0
+facenet-pytorch>=2.6.0
 
 # --- Stage 2: Tamil TTS & Whisper Verification ---
 faster-whisper>=1.1.0
